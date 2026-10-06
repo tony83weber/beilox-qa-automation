@@ -305,22 +305,6 @@ Ver [`docs/theoretical-questions.md`](docs/theoretical-questions.md).
 
 ---
 
-## Checklist anti-bochazo (entrega)
-
-Antes de mandar el repo, verificar:
-
-- [x] `npm ci` funciona en limpio
-- [x] `npx playwright install` documentado (README → Instalación)
-- [x] `npm run test:smoke:api` pasa en **&lt; 1 min** (smoke UI Chromium: `test:smoke:ui`; `test:smoke` full multi-browser es más largo a propósito)
-- [x] `npm run report:allure:generate` genera reporte
-- [x] `api-responses/*.json` commiteados con `"&lt;volatile&gt;"` en campos de fecha
-- [x] `api-evidence/` ignorado
-- [x] `.env` ignorado, `.env.example` commiteado
-- [x] No hay `waitForTimeout` en `src/`
-- [x] CI con cron lunes **15:00 ART** (`0 18 * * 1` UTC)
-
----
-
 ## Limitaciones conscientes
 
 - No hay ambiente staging de Beilox: usamos un sitio público → riesgo de cambio de DOM/promos.

@@ -4,11 +4,11 @@ Respuestas cortas para el challenge Beilox. No son citas de documentación: son 
 
 ## 1. Escalabilidad (suite ~500 tests)
 
-Separaría por **capa y dominio** (UI smoke / UI regresión / API contrato / API negativos), no solo por carpeta. En Playwright usaría **projects** (como ya hacemos con browsers + api), **tags** (`@smoke`, `@regression`) y en CI **sharding** + matrix por project. Fixtures compartidas y datos tipados en `src/data`; evitaría un “god POM”. Lo caro (multi-browser E2E) quedaría en el cron de los lunes; el PR corre smoke + API.
+Separaría por **capa y dominio** (UI smoke / UI regresión / API contrato / API negativos), no solo por carpeta. En Playwright usaría **projects** (como ya hacemos con browsers + api), **tags** (`@smoke`, `@regression`) y en CI **sharding** + matrix por project. Mantendría `fullyParallel` y **workers diferenciados** (más agresivo en local, acotado en CI) — como ya está en `playwright.config.ts`. Fixtures compartidas y datos tipados en `src/data`; evitaría un “god POM”. Lo caro (multi-browser E2E) quedaría en el cron de los lunes; el PR corre smoke + API.
 
 ## 2. Flakiness
 
-Antes de un `test.skip`: mirar **trace/video/screenshot**, confirmar si falla el **locator**, un **timing** o el **ambiente**. Reproducir en local con retries=0 y headed. Opciones: aserción auto-waiting más precisa, no depender de ads/promos, aislamiento de datos, subir timeout solo con evidencia, quarantine con issue vinculado — nunca skip silencioso.
+Antes de un `test.skip`: mirar **trace/video/screenshot**, confirmar si falla el **locator**, un **timing** o el **ambiente**. Reproducir en local con retries=0 y headed. Opciones: aserción auto-waiting más precisa, no depender de ads/promos, aislamiento de datos, subir timeout solo con evidencia. Si sigue intermitente: **quarantine** con tag `@quarantined` + link al issue — no `skip` silencioso.
 
 ## 3. POM — cambio del botón “Buscar”
 

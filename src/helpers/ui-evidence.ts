@@ -27,9 +27,10 @@ export async function uiAssertStep(
   await test.step(stepName, async () => {
     try {
       await assertion();
-      await attachUiScreenshot(page, `${stepName} — OK`);
+      // Nombre corto: en Allure queda como adjunto, no como jerga técnica.
+      await attachUiScreenshot(page, 'Captura de pantalla');
     } catch (error) {
-      await attachUiScreenshot(page, `${stepName} — FAIL`).catch(() => undefined);
+      await attachUiScreenshot(page, 'Captura de pantalla (fallo)').catch(() => undefined);
       throw error;
     }
   });

@@ -2,12 +2,10 @@ import { test, type Page } from '@playwright/test';
 
 /**
  * Evidencia visual para Allure / attachments de Playwright.
- * Se usa alrededor de aserciones UI: screenshot en OK y en FAIL.
+ * Se usa alrededor de aserciones UI que pasan; en el fallo, la captura la adjunta Playwright
+ * (`screenshot: 'only-on-failure'`), así que acá no hace falta capturar errores.
  */
 export async function attachUiScreenshot(page: Page, label: string): Promise<void> {
-  if (page.isClosed()) {
-    return;
-  }
   // Viewport y no fullPage: con listas largas de resultados WebKit supera el máximo de 32767 px.
   const body = await page.screenshot({ type: 'png' });
   await test.info().attach(label, {
@@ -16,23 +14,14 @@ export async function attachUiScreenshot(page: Page, label: string): Promise<voi
   });
 }
 
-/**
- * Ejecuta una aserción/paso UI como step legible en Allure
- * y adjunta screenshot al terminar OK o al fallar.
- */
+/** Ejecuta una aserción UI como step legible en Allure y adjunta screenshot si pasa. */
 export async function uiAssertStep(
   page: Page,
   stepName: string,
   assertion: () => Promise<void>,
 ): Promise<void> {
   await test.step(stepName, async () => {
-    try {
-      await assertion();
-      // Nombre corto: en Allure queda como adjunto, no como jerga técnica.
-      await attachUiScreenshot(page, 'Captura de pantalla');
-    } catch (error) {
-      await attachUiScreenshot(page, 'Captura de pantalla (fallo)').catch(() => undefined);
-      throw error;
-    }
+    await assertion();
+    await attachUiScreenshot(page, 'Captura de pantalla');
   });
 }

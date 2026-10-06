@@ -6,6 +6,7 @@ export const validSearch: SearchCriteria = {
   originOptionIncludes: 'Terminal Retiro',
   destinationQuery: 'Mar del Plata',
   destinationOptionIncludes: 'Mar del Plata Terminal',
+  routeLabels: { origin: 'Retiro', destination: 'Mar del Plata' },
   departureDaysAhead: 21,
   passengers: 1,
 };
@@ -16,24 +17,34 @@ export const noResultsSearch: SearchCriteria = {
   originOptionIncludes: 'Ushuaia',
   destinationQuery: 'La Quiaca',
   destinationOptionIncludes: 'Quiaca',
+  routeLabels: { origin: 'Ushuaia', destination: 'La Quiaca' },
   departureDaysAhead: 100,
   passengers: 1,
 };
 
-export function formatDepartureDate(daysAhead: number): string {
+export function departureDate(daysAhead: number): Date {
   const date = new Date();
   date.setDate(date.getDate() + daysAhead);
-  const dd = String(date.getDate()).padStart(2, '0');
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const yyyy = String(date.getFullYear());
-  // El home de CDP acepta dd-mm-yyyy en #fechaPartida
+  return date;
+}
+
+function departureDateParts(daysAhead: number): { dd: string; mm: string; yyyy: string } {
+  const date = departureDate(daysAhead);
+  return {
+    dd: String(date.getDate()).padStart(2, '0'),
+    mm: String(date.getMonth() + 1).padStart(2, '0'),
+    yyyy: String(date.getFullYear()),
+  };
+}
+
+/** Formato con el que el calendario del home completa `#fechaPartida`: dd-mm-yyyy. */
+export function formatDepartureDate(daysAhead: number): string {
+  const { dd, mm, yyyy } = departureDateParts(daysAhead);
   return `${dd}-${mm}-${yyyy}`;
 }
 
-export function expectedResultsPathFragment(criteria: SearchCriteria): RegExp {
-  // URL productiva usa slugs; validamos presencia de fragmentos conocidos.
-  if (criteria === validSearch || criteria.originOptionIncludes.includes('Retiro')) {
-    return /pasajes-micro\/.*retiro.*mar-del-plata/i;
-  }
-  return /pasajes-micro\//i;
+/** Formato con el que el sitio refleja la fecha en la URL de resultados (`FIda`): MM/DD/YYYY. */
+export function formatResultsUrlDate(daysAhead: number): string {
+  const { dd, mm, yyyy } = departureDateParts(daysAhead);
+  return `${mm}/${dd}/${yyyy}`;
 }

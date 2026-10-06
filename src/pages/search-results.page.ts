@@ -4,25 +4,23 @@ import { BasePage } from './base.page';
 const RESULTS_TIMEOUT_MS = 45_000;
 
 export class SearchResultsPage extends BasePage {
-  readonly servicesList: Locator;
   readonly serviceItems: Locator;
   readonly emptyStateMessage: Locator;
   readonly siteErrorDialog: Locator;
-  readonly newSearchLink: Locator;
-  readonly modifySearchControl: Locator;
-  readonly tripSummary: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.servicesList = page.locator('#servicios');
     this.serviceItems = page.locator('#servicios [id*="ServiciosListView"], #servicios #divData');
     this.emptyStateMessage = page.getByText(/No encontramos opciones para tu viaje/i);
     this.siteErrorDialog = page.getByText(/Detectamos un error, volvé a la Home/i);
-    this.newSearchLink = page.getByRole('link', { name: /NUEVA BÚSQUEDA/i }).or(
-      page.getByText(/NUEVA BÚSQUEDA/i),
-    );
-    this.modifySearchControl = page.getByText(/Modificar/i).first();
-    this.tripSummary = page.locator('#content, #divBag');
+  }
+
+  /** Título de la búsqueda, ej. "Retiro Buenos Aires hacia Mar del Plata". */
+  routeHeading(origin: string, destination: string): Locator {
+    return this.page.getByRole('heading', {
+      level: 1,
+      name: new RegExp(`${origin}.*hacia.*${destination}`, 'i'),
+    });
   }
 
   /**

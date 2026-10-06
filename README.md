@@ -15,7 +15,7 @@ Framework de pruebas automatizadas con **Playwright + TypeScript** (strict), cub
 
 - Node.js **≥ 20** y npm 10+
 - Java **JRE 8+** (solo para generar/abrir Allure)
-- En Windows: se recomienda correr todo desde **WSL (Ubuntu)** (Playwright + Origin CLI)
+- En Windows: se recomienda correr todo desde **WSL (Ubuntu)**
 
 ---
 

@@ -52,6 +52,7 @@ Los happy path de API escriben/actualizan:
 src/
   pages/          # POM: selectores + acciones
   assertions/     # aserciones de dominio (separadas del POM)
+  helpers/        # evidencia UI (screenshots Allure)
   fixtures/       # test.extend → homePage, resultsPage, swapiClient
   api/            # client SWAPI + helper AJV
   schemas/        # schemas AJV

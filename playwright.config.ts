@@ -12,7 +12,23 @@ export default defineConfig({
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
   workers: isCI ? 2 : undefined,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [
+    ['list'],
+    [
+      'allure-playwright',
+      {
+        resultsDir: 'allure-results',
+        detail: true,
+        suiteTitle: true,
+        environmentInfo: {
+          framework: 'Playwright + TypeScript',
+          base_url: baseURL,
+        },
+      },
+    ],
+    // Se mantiene HTML como respaldo; el reporte principal de UI es Allure.
+    ['html', { open: 'never' }],
+  ],
   timeout: 60_000,
   expect: {
     timeout: 15_000,
@@ -20,6 +36,8 @@ export default defineConfig({
   use: {
     baseURL,
     trace: 'on-first-retry',
+    // Screenshots de aserciones UI (OK/FAIL) se adjuntan a propósito vía uiAssertStep.
+    // Playwright sigue capturando fallos genéricos automáticamente.
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 20_000,

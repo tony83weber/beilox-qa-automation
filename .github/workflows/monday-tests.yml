@@ -83,12 +83,13 @@ jobs:
           CI: true
           BASE_URL: https://www.centraldepasajes.com.ar
 
-      - name: Upload UI report
+      - name: Upload UI report + Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ui-report-${{ matrix.project }}
           path: |
+            allure-results/
             playwright-report/
             test-results/
           if-no-files-found: warn

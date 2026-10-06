@@ -8,75 +8,73 @@ import {
   expectValidSearchResults,
 } from '../../src/assertions/search.assertions';
 
-test.describe('UI — Búsqueda Central de Pasajes', () => {
-  test('búsqueda válida muestra resultados coherentes con origen y destino', async ({
+test.describe('UI — Búsqueda de pasajes', () => {
+  test('Encuentra pasajes de Retiro a Mar del Plata', async ({
     homePage,
     resultsPage,
     page,
   }) => {
-    await test.step('Abrir home / buscador', async () => {
+    await test.step('Entra al sitio y ve el buscador', async () => {
       await homePage.open();
     });
     await expectHomeSearchFormVisible(page, homePage);
 
-    await test.step('Completar búsqueda válida y enviar', async () => {
+    await test.step('Busca viaje Retiro → Mar del Plata con fecha futura', async () => {
       await homePage.search(validSearch);
-    });
-    await test.step('Esperar página de resultados', async () => {
       await resultsPage.waitForResultsSettled();
     });
 
     await expectValidSearchResults(page, resultsPage);
   });
 
-  test('búsqueda sin resultados muestra estado vacío', async ({ homePage, resultsPage, page }) => {
-    await test.step('Abrir home / buscador', async () => {
+  test('Muestra mensaje cuando no hay pasajes disponibles', async ({
+    homePage,
+    resultsPage,
+    page,
+  }) => {
+    await test.step('Entra al sitio y ve el buscador', async () => {
       await homePage.open();
     });
-    await test.step('Completar búsqueda sin resultados y enviar', async () => {
+    await test.step('Busca un tramo sin disponibilidad (Ushuaia → La Quiaca)', async () => {
       await homePage.search(noResultsSearch);
-    });
-    await test.step('Esperar página de resultados', async () => {
       await resultsPage.waitForResultsSettled();
     });
 
-    await test.step('Aserción: URL de resultados', async () => {
+    await test.step('Queda en la pantalla de resultados de esa búsqueda', async () => {
       await expect(page).toHaveURL(/pasajes-micro\//i);
     });
     await expectNoSearchResults(page, resultsPage);
   });
 
-  test('datos inválidos (formulario vacío) bloquean la búsqueda', async ({ homePage, page }) => {
-    await test.step('Abrir home / buscador', async () => {
+  test('No permite buscar si faltan origen, destino o fecha', async ({ homePage, page }) => {
+    await test.step('Entra al sitio y ve el buscador', async () => {
       await homePage.open();
     });
-    await test.step('Enviar búsqueda vacía', async () => {
+    await test.step('Intenta buscar sin completar los datos', async () => {
       await homePage.submitEmptySearch();
     });
     await expectEmptySearchBlocked(page, homePage);
   });
 
-  test('volver atrás desde resultados recupera el buscador', async ({
+  test('Puede volver al buscador desde la pantalla de resultados', async ({
     homePage,
     resultsPage,
     page,
   }) => {
-    await test.step('Abrir home / buscador', async () => {
+    await test.step('Entra al sitio y ve el buscador', async () => {
       await homePage.open();
     });
-    await test.step('Completar búsqueda válida y enviar', async () => {
+    await test.step('Busca viaje Retiro → Mar del Plata con fecha futura', async () => {
       await homePage.search(validSearch);
-    });
-    await test.step('Esperar página de resultados', async () => {
       await resultsPage.waitForResultsSettled();
     });
     await expectValidSearchResults(page, resultsPage);
 
-    await test.step('Volver atrás (browser back)', async () => {
+    await test.step('Vuelve atrás con el navegador', async () => {
       await homePage.goBack();
     });
     await expectReturnedToSearchableHome(page, homePage);
-    await test.step('Aserción: URL de home', async () => {
+    await test.step('Confirma que volvió a la página de inicio', async () => {
       await expect(page).toHaveURL(/centraldepasajes\.com\.ar\/?$/i);
     });
   });

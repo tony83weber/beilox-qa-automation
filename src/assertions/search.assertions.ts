@@ -7,7 +7,7 @@ export async function expectHomeSearchFormVisible(
   page: Page,
   homePage: HomePage,
 ): Promise<void> {
-  await uiAssertStep(page, 'Aserción: formulario de búsqueda visible', async () => {
+  await uiAssertStep(page, 'Verifica que el buscador está listo para usar', async () => {
     await expect(homePage.searchButton).toBeVisible();
     await expect(homePage.originCombobox).toBeVisible();
     await expect(homePage.destinationCombobox).toBeVisible();
@@ -21,7 +21,7 @@ export async function expectValidSearchResults(
 ): Promise<void> {
   await uiAssertStep(
     page,
-    'Aserción: resultados coherentes con Retiro → Mar del Plata',
+    'Verifica que hay resultados de Retiro a Mar del Plata',
     async () => {
       await expect(page).toHaveURL(/pasajes-micro\/.*retiro.*mar-del-plata/i);
       await expect(resultsPage.serviceItems.first()).toBeVisible();
@@ -36,34 +36,40 @@ export async function expectNoSearchResults(
   page: Page,
   resultsPage: SearchResultsPage,
 ): Promise<void> {
-  await uiAssertStep(page, 'Aserción: estado sin resultados', async () => {
+  await uiAssertStep(page, 'Verifica el mensaje de que no hay pasajes', async () => {
     await expect(resultsPage.emptyStateMessage).toBeVisible();
     await expect(resultsPage.serviceItems).toHaveCount(0);
   });
 }
 
 export async function expectEmptySearchBlocked(page: Page, homePage: HomePage): Promise<void> {
-  await uiAssertStep(page, 'Aserción: búsqueda vacía bloqueada (HTML5 invalid)', async () => {
-    await expect(page).toHaveURL(/centraldepasajes\.com\.ar\/?$/i);
-    await expect(homePage.searchButton).toBeVisible();
+  await uiAssertStep(
+    page,
+    'Verifica que el sitio pide completar origen, destino y fecha',
+    async () => {
+      await expect(page).toHaveURL(/centraldepasajes\.com\.ar\/?$/i);
+      await expect(homePage.searchButton).toBeVisible();
 
-    const invalidFields = await page.evaluate(() =>
-      Array.from(
-        document.querySelectorAll('#PadOrigen:invalid, #PadDestino:invalid, #fechaPartida:invalid'),
-      ).map((el) => el.id),
-    );
-    expect(invalidFields.length).toBeGreaterThan(0);
-    expect(invalidFields).toEqual(
-      expect.arrayContaining(['PadOrigen', 'PadDestino', 'fechaPartida']),
-    );
-  });
+      const invalidFields = await page.evaluate(() =>
+        Array.from(
+          document.querySelectorAll(
+            '#PadOrigen:invalid, #PadDestino:invalid, #fechaPartida:invalid',
+          ),
+        ).map((el) => el.id),
+      );
+      expect(invalidFields.length).toBeGreaterThan(0);
+      expect(invalidFields).toEqual(
+        expect.arrayContaining(['PadOrigen', 'PadDestino', 'fechaPartida']),
+      );
+    },
+  );
 }
 
 export async function expectReturnedToSearchableHome(
   page: Page,
   homePage: HomePage,
 ): Promise<void> {
-  await uiAssertStep(page, 'Aserción: home usable tras volver atrás', async () => {
+  await uiAssertStep(page, 'Verifica que el buscador volvió a estar disponible', async () => {
     await expect(homePage.searchButton).toBeVisible();
     await expect(homePage.originCombobox).toBeVisible();
     await expect(homePage.destinationCombobox).toBeVisible();

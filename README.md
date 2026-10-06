@@ -13,14 +13,41 @@ Framework de pruebas automatizadas con **Playwright + TypeScript** (strict), cub
 
 ## Requisitos
 
-- Node.js **≥ 20**
-- npm 10+
+- Node.js **≥ 20** y npm 10+
+- Java **JRE 8+** (solo para generar/abrir Allure)
+- En Windows: se recomienda correr todo desde **WSL (Ubuntu)** (Playwright + Origin CLI)
+
+---
+
+## Instalación completa (WSL / Linux)
 
 ```bash
+# 1) Entrar al repo
+cd ~/beilox-latest   # o la carpeta donde clonaste el proyecto
+
+# 2) Dependencias Node
 npm ci
+
+# 3) Browsers de Playwright (Chromium, Firefox, WebKit; mobile usa Chromium)
 npx playwright install --with-deps chromium firefox webkit
-cp .env.example .env
+
+# 4) Variables de entorno locales
+cp -n .env.example .env
+
+# 5) Java para Allure (si no lo tenés)
+sudo apt update
+sudo apt install -y default-jre
 ```
+
+Actualizar código cuando haya cambios:
+
+```bash
+cd ~/beilox-latest
+git pull
+npm ci
+```
+
+> Nota: el trabajo del agente Cloud puede vivir en el remoto `tmp-...`. Si `beilox-qa-challenge` quedó atrasado, usá la carpeta actualizada (`beilox-latest`) o recloná ese remoto.
 
 ---
 
@@ -36,22 +63,33 @@ cp .env.example .env
 | `npm run test:ui` | UI en los 4 projects |
 | `npm test` | Toda la suite (UI×4 + API) |
 | `npm run typecheck` | `tsc --noEmit` |
-| `npm run report` | HTML Playwright (respaldo) |
-| `npm run report:allure` | Genera y abre **Allure** (reporte principal UI) |
-| `npm run report:allure:serve` | Sirve Allure desde `allure-results` |
+| `npm run report` | HTML Playwright (respaldo técnico) |
+| `npm run report:allure:generate` | Genera Allure estático en `allure-report/` |
+| `npm run report:allure` | Genera Allure e intenta abrirlo |
+| `npm run report:allure:serve` | Sirve `allure-results` con Allure |
 
-### Reporte Allure (UI)
+### Reporte Allure (UI) — pensado para negocio
 
-Allure muestra **un step por línea** (abrir home, buscar, aserciones) y adjunta **screenshot en OK y en FAIL** alrededor de las expectativas UI (`uiAssertStep`).
+El reporte UI muestra **pasos en lenguaje de negocio** (ej. “Busca viaje Retiro → Mar del Plata…”), no detalle técnico de Playwright (`Navigate`, `Wait for selector`, before hooks).
+
+En cada verificación importante adjunta **screenshot OK o FAIL**.
 
 ```bash
-npm run test:ui:chromium   # deja resultados en allure-results/
-npm run report:allure      # genera allure-report/ y lo abre
+# Correr UI (escribe allure-results/)
+rm -rf allure-results
+npm run test:ui:chromium
+
+# Generar reporte
+npm run report:allure:generate
+
+# Servirlo (útil en WSL: el auto-open del browser suele fallar)
+npx --yes serve allure-report -l tcp://0.0.0.0:9324
 ```
 
-Requisito para abrir Allure: **Java** (JRE 8+). En WSL Ubuntu: `sudo apt install -y default-jre`.
+En el **browser de Windows** abrí: `http://localhost:9324`  
+Si da connection refused, en WSL corré `hostname -I` y usá `http://<esa-ip>:9324`.
 
-La evidencia de **API** sigue siendo los JSON en `api-responses/` (no screenshots).
+La evidencia de **API** sigue siendo los JSON en `api-responses/` (status/body de happy path), no screenshots.
 
 Los happy path de API escriben/actualizan:
 
@@ -88,6 +126,7 @@ api-responses/    # bodies happy path
 4. **Sin `waitForTimeout` fijos** en tests/POM de producción; esperas vía auto-waiting / `toBeVisible` / `waitForURL` implícito en assertions.
 5. **Credenciales / config** vía `.env` (nunca committeado). El challenge usa URLs públicas; `.env.example` documenta el contrato.
 6. **Tipado estricto** (`strict`, `noImplicitAny`); TypeScript 5.8.
+7. **Allure UI legible:** `allure-playwright` con `detail: false` para ocultar steps técnicos; solo `test.step` de negocio + screenshots en aserciones.
 
 ### UI — escenarios
 

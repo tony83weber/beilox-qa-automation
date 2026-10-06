@@ -18,7 +18,9 @@ export default defineConfig({
       'allure-playwright',
       {
         resultsDir: 'allure-results',
-        detail: true,
+        // false = no mostrar Navigate / Wait for selector / Before hooks técnicos.
+        // Solo quedan los test.step de negocio que escribimos nosotros.
+        detail: false,
         suiteTitle: true,
         environmentInfo: {
           framework: 'Playwright + TypeScript',

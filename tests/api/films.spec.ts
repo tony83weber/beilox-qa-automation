@@ -6,40 +6,46 @@ import { assertFilmsListContract, assertNotFoundBody } from '../../src/assertion
 const listSchema = compileSchema(filmsListSchema);
 const errorSchema = compileSchema(notFoundSchema);
 
-test.describe('API — /films', () => {
-  test('happy path: lista films con títulos/episodios únicos y evidencia', async ({
-    swapiClient,
-  }) => {
-    const timed = await swapiClient.getResourceList('films');
+test.describe('API — /films', { tag: ['@api', '@regression'] }, () => {
+  test(
+    'happy path: lista films con títulos/episodios únicos y evidencia',
+    { tag: ['@smoke'] },
+    async ({ swapiClient }) => {
+      const timed = await swapiClient.getResourceList('films');
 
-    expect(timed.response.status()).toBe(200);
-    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
-    assertValidSchema(listSchema, timed.body);
-    assertFilmsListContract(timed.body, 'A New Hope');
+      expect(timed.response.status()).toBe(200);
+      expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+      assertValidSchema(listSchema, timed.body);
+      assertFilmsListContract(timed.body, 'A New Hope');
 
-    const saved = await swapiClient.saveEvidence({
-      resource: 'films',
-      scenario: 'happy-path-list',
-      timed,
-      updateHappyPath: true,
-    });
-    expect(saved.happyPathPath).toContain('films-happy-path.json');
-  });
+      const saved = await swapiClient.saveEvidence({
+        resource: 'films',
+        scenario: 'happy-path-list',
+        timed,
+        updateHappyPath: true,
+      });
+      expect(saved.happyPathPath).toContain('films-happy-path.json');
+    },
+  );
 
-  test('error 404: id inexistente', async ({ swapiClient }) => {
-    const timed = await swapiClient.getResourceById('films', 99999);
+  test(
+    'error 404: id inexistente',
+    { tag: ['@smoke'] },
+    async ({ swapiClient }) => {
+      const timed = await swapiClient.getResourceById('films', 99999);
 
-    expect(timed.response.status()).toBe(404);
-    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
-    assertValidSchema(errorSchema, timed.body);
-    assertNotFoundBody(timed.body);
+      expect(timed.response.status()).toBe(404);
+      expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+      assertValidSchema(errorSchema, timed.body);
+      assertNotFoundBody(timed.body);
 
-    await swapiClient.saveEvidence({
-      resource: 'films',
-      scenario: 'error-404-missing-id',
-      timed,
-    });
-  });
+      await swapiClient.saveEvidence({
+        resource: 'films',
+        scenario: 'error-404-missing-id',
+        timed,
+      });
+    },
+  );
 
   test('error esperado: id malformado responde 404 (sin 400 estable en SWAPI)', async ({
     swapiClient,

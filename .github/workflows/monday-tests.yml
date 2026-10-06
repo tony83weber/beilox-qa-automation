@@ -2,7 +2,7 @@ name: Monday UI + API Tests
 
 on:
   schedule:
-    # Lunes 15:00 ART (GMT-3) = 18:00 UTC — siempre contra prod live
+    # Lunes 15:00 ART (GMT-3) = 18:00 UTC — siempre contra prod live, suite full
     - cron: '0 18 * * 1'
   workflow_dispatch:
     inputs:
@@ -14,6 +14,13 @@ on:
           - qa
           - dev
         default: prod
+      suite:
+        description: smoke = @smoke (rápido); full = regresión multi-browser
+        type: choice
+        options:
+          - smoke
+          - full
+        default: full
 
 jobs:
   config:
@@ -44,14 +51,14 @@ jobs:
           TEST_ENV: ${{ matrix.test_env }}
 
   api:
-    name: API suite (${{ github.event.inputs.test_env || 'prod' }})
+    name: API ${{ github.event.inputs.suite || 'full' }} (${{ github.event.inputs.test_env || 'prod' }})
     needs: config
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
       CI: true
       TEST_ENV: ${{ github.event.inputs.test_env || 'prod' }}
-      # Preferir secrets por ambiente (GitHub Environments) o genéricos de la corrida
+      SUITE: ${{ github.event.inputs.suite || 'full' }}
       UI_BASE_URL: ${{ secrets.UI_BASE_URL }}
       API_BASE_URL: ${{ secrets.API_BASE_URL }}
       QA_UI_BASE_URL: ${{ secrets.QA_UI_BASE_URL }}
@@ -75,14 +82,19 @@ jobs:
       - name: Install Playwright Chromium (API request context)
         run: npx playwright install --with-deps chromium
 
-      - name: Run API tests
+      - name: Run API tests (smoke)
+        if: env.SUITE == 'smoke'
+        run: npx playwright test --project=api --grep @smoke
+
+      - name: Run API tests (full)
+        if: env.SUITE != 'smoke'
         run: npx playwright test --project=api
 
       - name: Upload API happy-path JSON + report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: api-artifacts-${{ env.TEST_ENV }}
+          name: api-artifacts-${{ env.TEST_ENV }}-${{ env.SUITE }}
           path: |
             api-responses/
             api-evidence/
@@ -92,7 +104,7 @@ jobs:
           if-no-files-found: warn
 
   ui:
-    name: UI — ${{ matrix.project }} (${{ github.event.inputs.test_env || 'prod' }})
+    name: UI — ${{ matrix.project }} ${{ github.event.inputs.suite || 'full' }} (${{ github.event.inputs.test_env || 'prod' }})
     needs: config
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -102,15 +114,20 @@ jobs:
         include:
           - project: ui-chromium
             browser: chromium
+            suites: 'smoke,full'
           - project: ui-firefox
             browser: firefox
+            suites: 'full'
           - project: ui-webkit
             browser: webkit
+            suites: 'full'
           - project: ui-mobile-chromium
             browser: chromium
+            suites: 'full'
     env:
       CI: true
       TEST_ENV: ${{ github.event.inputs.test_env || 'prod' }}
+      SUITE: ${{ github.event.inputs.suite || 'full' }}
       UI_BASE_URL: ${{ secrets.UI_BASE_URL }}
       API_BASE_URL: ${{ secrets.API_BASE_URL }}
       QA_UI_BASE_URL: ${{ secrets.QA_UI_BASE_URL }}
@@ -118,29 +135,51 @@ jobs:
       DEV_UI_BASE_URL: ${{ secrets.DEV_UI_BASE_URL }}
       DEV_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
     steps:
+      - name: Decide if this browser runs for the suite
+        id: gate
+        run: |
+          if echo "${{ matrix.suites }}" | grep -qw "${{ env.SUITE }}"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
+        if: steps.gate.outputs.run == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node
+        if: steps.gate.outputs.run == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: npm
 
       - name: Install dependencies
+        if: steps.gate.outputs.run == 'true'
         run: npm ci
 
       - name: Install Playwright browser
+        if: steps.gate.outputs.run == 'true'
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
-      - name: Run UI tests
+      - name: Run UI tests (smoke)
+        if: steps.gate.outputs.run == 'true' && env.SUITE == 'smoke'
+        run: npx playwright test --project=${{ matrix.project }} --grep @smoke
+
+      - name: Run UI tests (full)
+        if: steps.gate.outputs.run == 'true' && env.SUITE != 'smoke'
         run: npx playwright test --project=${{ matrix.project }}
 
+      - name: Skip (browser not in suite)
+        if: steps.gate.outputs.run != 'true'
+        run: echo "Skipping ${{ matrix.project }} for suite=${{ env.SUITE }}"
+
       - name: Upload UI report + Allure results
-        if: always()
+        if: always() && steps.gate.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: ui-report-${{ matrix.project }}-${{ env.TEST_ENV }}
+          name: ui-report-${{ matrix.project }}-${{ env.TEST_ENV }}-${{ env.SUITE }}
           path: |
             allure-results/
             playwright-report/

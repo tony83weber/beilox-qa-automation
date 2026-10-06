@@ -10,25 +10,27 @@ import {
 const listSchema = compileSchema(peoplePlanetsListSchema);
 const errorSchema = compileSchema(notFoundSchema);
 
-test.describe('API — /planets', () => {
-  test('happy path: lista planets con contrato, Tatooine y evidencia', async ({
-    swapiClient,
-  }) => {
-    const timed = await swapiClient.getResourceList('planets');
+test.describe('API — /planets', { tag: ['@api', '@regression'] }, () => {
+  test(
+    'happy path: lista planets con contrato, Tatooine y evidencia',
+    { tag: ['@smoke'] },
+    async ({ swapiClient }) => {
+      const timed = await swapiClient.getResourceList('planets');
 
-    expect(timed.response.status()).toBe(200);
-    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
-    assertValidSchema(listSchema, timed.body);
-    assertPeoplePlanetsListContract(timed.body, 'Tatooine');
+      expect(timed.response.status()).toBe(200);
+      expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+      assertValidSchema(listSchema, timed.body);
+      assertPeoplePlanetsListContract(timed.body, 'Tatooine');
 
-    const saved = await swapiClient.saveEvidence({
-      resource: 'planets',
-      scenario: 'happy-path-list',
-      timed,
-      updateHappyPath: true,
-    });
-    expect(saved.happyPathPath).toContain('planets-happy-path.json');
-  });
+      const saved = await swapiClient.saveEvidence({
+        resource: 'planets',
+        scenario: 'happy-path-list',
+        timed,
+        updateHappyPath: true,
+      });
+      expect(saved.happyPathPath).toContain('planets-happy-path.json');
+    },
+  );
 
   test('paginación: página 1 y 2 no comparten uids', async ({ swapiClient }) => {
     // Sin `limit`, SWAPI.tech puede devolver la misma página 1 otra vez.
@@ -47,20 +49,24 @@ test.describe('API — /planets', () => {
     });
   });
 
-  test('error 404: id inexistente', async ({ swapiClient }) => {
-    const timed = await swapiClient.getResourceById('planets', 99999);
+  test(
+    'error 404: id inexistente',
+    { tag: ['@smoke'] },
+    async ({ swapiClient }) => {
+      const timed = await swapiClient.getResourceById('planets', 99999);
 
-    expect(timed.response.status()).toBe(404);
-    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
-    assertValidSchema(errorSchema, timed.body);
-    assertNotFoundBody(timed.body);
+      expect(timed.response.status()).toBe(404);
+      expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+      assertValidSchema(errorSchema, timed.body);
+      assertNotFoundBody(timed.body);
 
-    await swapiClient.saveEvidence({
-      resource: 'planets',
-      scenario: 'error-404-missing-id',
-      timed,
-    });
-  });
+      await swapiClient.saveEvidence({
+        resource: 'planets',
+        scenario: 'error-404-missing-id',
+        timed,
+      });
+    },
+  );
 
   test('error esperado: id malformado responde 404 (sin 400 estable en SWAPI)', async ({
     swapiClient,

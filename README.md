@@ -55,6 +55,10 @@ npm ci
 
 | Comando | Qué corre |
 |---------|-----------|
+| `npm run test:smoke` | Solo tests con tag `@smoke` (rápido / PR) |
+| `npm run test:regression` | Tests con tag `@regression` |
+| `npm run test:smoke:api` | Smoke API |
+| `npm run test:smoke:ui` | Smoke UI (Chromium) |
 | `npm run test:config` | Valida resolución de ambientes (`TEST_ENV`) |
 | `npm run test:config:all-envs` | Corre config contra prod + qa + dev |
 | `npm run test:api` | Solo API (project `api`) |
@@ -188,7 +192,45 @@ api-responses/    # bodies happy path
 | Datos inválidos | Submit vacío → permanece en home + campos `:invalid` |
 | Volver atrás | Resultados → `goBack` → buscador usable |
 
-**Trade-off:** el sitio es productivo y externo (Select2, datepicker jQuery, ads). Priorizamos locators estables (`#btnCons`, containers Select2) y `click({ noWaitAfter: true })` en el submit porque Firefox puede colgarse esperando navigations programadas del sitio.
+**Trade-off:** el sitio es productivo y externo (Select2, datepicker jQuery, ads). Priorizamos locators estables (`#btnCons`, containers Select2) y `click({ noWaitAfter: true })` en el submit porque Firefox puede colgarse esperando navigations programadas del sitio. Detalle: [`docs/locators.md`](docs/locators.md).
+
+---
+
+## Decisiones y trade-offs
+
+### Qué prioricé
+
+- Arquitectura mantenible (POM + fixtures + projects + tipado estricto).
+- Reporte **entendible por negocio** (Allure con steps claros; evidencia API adjunta).
+- Multi-ambiente listo para CI (`dev`/`qa`/`prod`) aunque hoy solo `prod` sea live.
+- Honestidad de contrato: no inventar HTTP 400 en SWAPI; documentar paginación que requiere `limit`.
+
+### Qué dejé afuera (a propósito)
+
+| Ítem | Por qué |
+|------|---------|
+| Appium / Detox / Maestro | Pedido en el rol, **no** en este challenge. |
+| Sharding real en CI | Se documenta el criterio; con la suite actual el matrix por browser alcanza. |
+| Ambiente QA/DEV reales | No hay staging Beilox expuesto; hay placeholders + skip hasta secrets. |
+| Más E2E del mismo buscador | No suma cobertura de riesgo; suma mantenimiento. |
+| Snapshot estricto del JSON API | Las fechas volátiles lo rompen; usamos schema + aserciones de negocio + mask. |
+
+### Riesgo flaky (sitio ajeno)
+
+Central de Pasajes es **prod público**: ads, promos, Select2, datepicker. Mitigaciones:
+
+- Locators encapsulados; sin `waitForTimeout` fijos.
+- Cierre Select2 por value + API (ver [`docs/bug-report-select2-allure.md`](docs/bug-report-select2-allure.md)).
+- Retries solo en CI; evidencia Allure (screenshot UI / JSON API).
+- Smoke vs regresión (tags) para no pagar multi-browser en cada feedback corto.
+
+### Si la suite creciera a ~500 tests
+
+1. Capas: `@smoke` (PR) / `@regression` (nightly-lunes) / API contrato separado.
+2. Projects ya usados (browsers + api + config); sumar tags por dominio.
+3. CI: smoke en cada push; lunes full + matrix; sharding cuando el wall-clock duela.
+4. Datos tipados y fixtures; evitar POM dios.
+5. Multi-browser solo en smoke crítico + nightly, no en todo el set.
 
 ### API — escenarios (por endpoint)
 
@@ -206,9 +248,11 @@ Nota: el listado de `films` usa `result[]`, mientras `people`/`planets` usan `re
 
 Archivo: [`.github/workflows/monday-tests.yml`](.github/workflows/monday-tests.yml)
 
-- **Cron:** `0 18 * * 1` → lunes **15:00 ART** (GMT-3)
-- También `workflow_dispatch` para corridas manuales
-- Job **api:** instala deps, corre `--project=api`, sube `api-responses/` + report
+- **Cron:** `0 18 * * 1` → lunes **15:00 ART** (GMT-3), suite **full**
+- También `workflow_dispatch` con inputs `test_env` (`prod`/`qa`/`dev`) y `suite` (`smoke`/`full`)
+- **smoke:** API + UI Chromium con `--grep @smoke` (Firefox/WebKit/mobile se skipean)
+- **full:** API completa + matrix de 4 projects UI
+- Job **api:** instala deps, corre suite según tag, sube `api-responses/` + `api-evidence/` + report
 - Job **ui** con **matrix** de 4 projects (chromium / firefox / webkit / mobile-chromium), browsers en paralelo, `fail-fast: false`
 
 ### Cómo escalaría el workflow si la suite crece

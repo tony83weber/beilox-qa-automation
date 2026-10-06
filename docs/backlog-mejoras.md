@@ -5,33 +5,17 @@
 1. Multi-ambiente `dev` / `qa` / `prod` + CI
 2. Allure UI legible (steps negocio + screenshots)
 3. Fixes waits Select2 / Promise.race (steps rojos fantasma)
+4. **A.** Evidencia API robusta (status/body/tiempo, mask fechas, aserciones de negocio, attachment Allure)
+5. **B.** Sección “Decisiones y trade-offs” en README
+6. **C.** Bug report simulado Select2/Allure — [`docs/bug-report-select2-allure.md`](bug-report-select2-allure.md)
+7. **D.** Tags `@smoke` / `@regression` + scripts `test:smoke` / `test:regression` + input `suite` en CI
+8. **E.** Locators — criterios documentados en [`docs/locators.md`](locators.md)
 
-## En curso / siguiente (ROI alto)
+## Pendiente
 
-### A. Evidencia API robusta — EN CURSO
-- Persistir por llamada: status, body, tiempo, endpoint/método
-- Enmascarar campos volátiles (`timestamp`, `created`, `edited`)
-- Aserciones de body con criterio de negocio (no solo schema):
-  - entidad esperada presente (ej. Luke / Tatooine / A New Hope)
-  - uids únicos en la página
-  - paginación: página 1 y 2 sin solapamiento de ids
+_(vacío — slice del challenge cerrado)_
 
-### B. Sección “Decisiones y trade-offs” en README
-- Qué se dejó afuera y por qué
-- Riesgo flaky sitio ajeno
-- Cómo escalar a ~500 tests
-
-### C. Bug report simulado (`docs/`)
-- Caso Select2 `--open` / ruido en Allure
-- Evidencia + impacto + propuesta
-
-### D. Tags `@smoke` / `@regression` + script CI smoke
-- Smoke en PR / dispatch; full el lunes
-
-### E. Locators — pasada fina
-- Roles/labels donde aporte; documentar por qué Select2/IDs
-
-## Fuera de alcance (no aporta distinción)
+## Fuera de alcance
 - Más E2E del mismo buscador sin valor
 - Docker/dashboard over-engineering
 - Appium (no pedido en el challenge)

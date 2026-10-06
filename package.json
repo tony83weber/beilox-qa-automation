@@ -5,6 +5,10 @@
   "description": "Challenge técnico Beilox — QA Automation Senior (Playwright + TypeScript)",
   "scripts": {
     "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:smoke:api": "playwright test --project=api --grep @smoke",
+    "test:smoke:ui": "playwright test --project=ui-chromium --grep @smoke",
     "test:config": "playwright test --project=config",
     "test:config:all-envs": "TEST_ENV=prod playwright test --project=config && TEST_ENV=qa playwright test --project=config && TEST_ENV=dev playwright test --project=config",
     "test:ui": "playwright test --project=ui-chromium --project=ui-firefox --project=ui-webkit --project=ui-mobile-chromium",

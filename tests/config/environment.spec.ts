@@ -3,7 +3,7 @@ import { ENVIRONMENT_CATALOG } from '../../src/config/environments';
 import { resolveEnvironment } from '../../src/config/resolve-environment';
 import { ENVIRONMENT_NAMES } from '../../src/config/environment.types';
 
-test.describe('Configuración multi-ambiente', () => {
+test.describe('Configuración multi-ambiente', { tag: ['@config', '@smoke', '@regression'] }, () => {
   test('prod (default) resuelve URLs live del challenge', async () => {
     const config = resolveEnvironment({ TEST_ENV: 'prod' });
 

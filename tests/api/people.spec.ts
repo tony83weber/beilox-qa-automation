@@ -16,26 +16,28 @@ const listSchema = compileSchema(peoplePlanetsListSchema);
 const detailSchema = compileSchema(resourceDetailSchema);
 const errorSchema = compileSchema(notFoundSchema);
 
-test.describe('API — /people', () => {
-  test('happy path: lista people con contrato, entidad esperada y evidencia', async ({
-    swapiClient,
-  }) => {
-    const timed = await swapiClient.getResourceList('people');
+test.describe('API — /people', { tag: ['@api', '@regression'] }, () => {
+  test(
+    'happy path: lista people con contrato, entidad esperada y evidencia',
+    { tag: ['@smoke'] },
+    async ({ swapiClient }) => {
+      const timed = await swapiClient.getResourceList('people');
 
-    expect(timed.response.status()).toBe(200);
-    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
-    assertValidSchema(listSchema, timed.body);
-    assertPeoplePlanetsListContract(timed.body, 'Luke Skywalker');
+      expect(timed.response.status()).toBe(200);
+      expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+      assertValidSchema(listSchema, timed.body);
+      assertPeoplePlanetsListContract(timed.body, 'Luke Skywalker');
 
-    const saved = await swapiClient.saveEvidence({
-      resource: 'people',
-      scenario: 'happy-path-list',
-      timed,
-      updateHappyPath: true,
-    });
-    expect(saved.evidencePath).toContain('people-happy-path-list.json');
-    expect(saved.happyPathPath).toContain('people-happy-path.json');
-  });
+      const saved = await swapiClient.saveEvidence({
+        resource: 'people',
+        scenario: 'happy-path-list',
+        timed,
+        updateHappyPath: true,
+      });
+      expect(saved.evidencePath).toContain('people-happy-path-list.json');
+      expect(saved.happyPathPath).toContain('people-happy-path.json');
+    },
+  );
 
   test('paginación: página 1 y 2 no comparten uids', async ({ swapiClient }) => {
     // SWAPI.tech sin `limit` ignora page y repite página 1 — hay que paginar con limit.
@@ -69,20 +71,24 @@ test.describe('API — /people', () => {
     });
   });
 
-  test('error 404: id inexistente', async ({ swapiClient }) => {
-    const timed = await swapiClient.getResourceById('people', 99999);
+  test(
+    'error 404: id inexistente',
+    { tag: ['@smoke'] },
+    async ({ swapiClient }) => {
+      const timed = await swapiClient.getResourceById('people', 99999);
 
-    expect(timed.response.status()).toBe(404);
-    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
-    assertValidSchema(errorSchema, timed.body);
-    assertNotFoundBody(timed.body);
+      expect(timed.response.status()).toBe(404);
+      expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+      assertValidSchema(errorSchema, timed.body);
+      assertNotFoundBody(timed.body);
 
-    await swapiClient.saveEvidence({
-      resource: 'people',
-      scenario: 'error-404-missing-id',
-      timed,
-    });
-  });
+      await swapiClient.saveEvidence({
+        resource: 'people',
+        scenario: 'error-404-missing-id',
+        timed,
+      });
+    },
+  );
 
   test('error esperado: id malformado responde 404 (SWAPI no expone 400 estable)', async ({
     swapiClient,

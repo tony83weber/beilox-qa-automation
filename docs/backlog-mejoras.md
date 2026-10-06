@@ -25,6 +25,16 @@ Notas del candidato (2026-10-06). Revisar mañana; no implementar todavía.
   - (deseable) tiempo de respuesta, endpoint, método
 - Carpeta o naming claro para revisar qué se guardó en cada corrida.
 
+### 3.b Fechas dinámicas en `api-responses/` (riesgo señalado por el candidato)
+
+- Bodies de SWAPI traen campos que **cambian** (`created`, `edited`, `timestamp`, etc.), sobre todo en `films` / detalles.
+- Hoy los tests **no fallan mañana** solo por eso: validamos con **AJV (schema/estructura)** y **reescribimos** el JSON en cada happy path; no hacemos snapshot estricto campo-a-campo contra el archivo viejo.
+- Igual hay que mejorar para que “corra siempre”:
+  - no commitear snapshots frágiles con fechas, o
+  - al comparar, **ignorar / enmascarar** campos volátiles (`timestamp`, `created`, `edited`), o
+  - tratar `api-responses/` como **artifact de corrida** (CI) y no como golden fijo, o
+  - golden estable solo con campos invariantes (`uid`, `name`, `title`, etc.).
+
 ## 4. Locators UI — revisión de calidad
 
 - Revisar si los selectores actuales (Select2, `#btnCons`, etc.) son las mejores opciones.

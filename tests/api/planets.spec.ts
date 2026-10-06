@@ -21,7 +21,7 @@ test.describe('API — /planets', () => {
     assertValidSchema(listSchema, timed.body);
     assertPeoplePlanetsListContract(timed.body, 'Tatooine');
 
-    const saved = swapiClient.saveEvidence({
+    const saved = await swapiClient.saveEvidence({
       resource: 'planets',
       scenario: 'happy-path-list',
       timed,
@@ -40,7 +40,7 @@ test.describe('API — /planets', () => {
     assertPeoplePlanetsListContract(page1.body, 'Tatooine');
     assertNoUidOverlapBetweenPages(page1.body, page2.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'planets',
       scenario: 'pagination-page-2',
       timed: page2,
@@ -55,7 +55,7 @@ test.describe('API — /planets', () => {
     assertValidSchema(errorSchema, timed.body);
     assertNotFoundBody(timed.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'planets',
       scenario: 'error-404-missing-id',
       timed,
@@ -72,7 +72,7 @@ test.describe('API — /planets', () => {
     assertValidSchema(errorSchema, timed.body);
     assertNotFoundBody(timed.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'planets',
       scenario: 'error-404-malformed-id',
       timed,

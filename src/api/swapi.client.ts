@@ -61,12 +61,12 @@ export class SwapiClient {
     return this.get(`${resource}/${id}`);
   }
 
-  saveEvidence(
+  async saveEvidence(
     input: Omit<SaveEvidenceInput, 'status' | 'elapsedMs' | 'body' | 'endpoint'> & {
       timed: TimedResponse;
       updateHappyPath?: boolean;
     },
-  ): ReturnType<typeof saveApiEvidence> {
+  ): Promise<Awaited<ReturnType<typeof saveApiEvidence>>> {
     return saveApiEvidence({
       resource: input.resource,
       scenario: input.scenario,

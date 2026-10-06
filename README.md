@@ -106,6 +106,8 @@ Evidencia por corrida (gitignore): `api-evidence/{resource}-{scenario}.json` con
 { "meta": { "endpoint", "status", "elapsedMs", "environment", "scenario" }, "body": "…enmascarado…" }
 ```
 
+Esa misma evidencia se **adjunta al test en Allure** (`Evidencia API — people / happy-path-list`), así se abre el body desde el reporte sin ir a la carpeta.
+
 Happy path del challenge (commiteable, fechas enmascaradas):
 
 - `api-responses/people-happy-path.json`

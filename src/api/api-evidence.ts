@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { test } from '@playwright/test';
 import { getEnvironmentConfig } from '../types/env';
 import { maskVolatileFields } from './mask-volatile';
 import type { SwapiResource } from './swapi.client';
@@ -31,13 +32,12 @@ export type SaveEvidenceInput = {
 };
 
 /**
- * Guarda evidencia de corrida en api-evidence/ (gitignore).
- * Opcionalmente refresca el happy-path del challenge con body enmascarado.
+ * Guarda evidencia en api-evidence/ y la adjunta al test actual (Allure / report).
  */
-export function saveApiEvidence(input: SaveEvidenceInput): {
+export async function saveApiEvidence(input: SaveEvidenceInput): Promise<{
   evidencePath: string;
   happyPathPath?: string;
-} {
+}> {
   const env = getEnvironmentConfig();
   const document: ApiEvidenceDocument = {
     meta: {
@@ -52,13 +52,15 @@ export function saveApiEvidence(input: SaveEvidenceInput): {
     body: maskVolatileFields(input.body),
   };
 
+  const payload = `${JSON.stringify(document, null, 2)}\n`;
+
   const evidenceDir = path.resolve(process.cwd(), 'api-evidence');
   fs.mkdirSync(evidenceDir, { recursive: true });
   const evidencePath = path.join(
     evidenceDir,
     `${input.resource}-${slug(input.scenario)}.json`,
   );
-  fs.writeFileSync(evidencePath, `${JSON.stringify(document, null, 2)}\n`, 'utf8');
+  fs.writeFileSync(evidencePath, payload, 'utf8');
 
   let happyPathPath: string | undefined;
   if (input.updateHappyPath) {
@@ -71,6 +73,12 @@ export function saveApiEvidence(input: SaveEvidenceInput): {
       'utf8',
     );
   }
+
+  // Visible en Allure al abrir el test (sin ir a la carpeta).
+  await test.info().attach(`Evidencia API — ${input.resource} / ${input.scenario}`, {
+    body: Buffer.from(payload, 'utf8'),
+    contentType: 'application/json',
+  });
 
   return { evidencePath, happyPathPath };
 }

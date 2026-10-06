@@ -27,7 +27,7 @@ test.describe('API — /people', () => {
     assertValidSchema(listSchema, timed.body);
     assertPeoplePlanetsListContract(timed.body, 'Luke Skywalker');
 
-    const saved = swapiClient.saveEvidence({
+    const saved = await swapiClient.saveEvidence({
       resource: 'people',
       scenario: 'happy-path-list',
       timed,
@@ -47,7 +47,7 @@ test.describe('API — /people', () => {
     assertPeoplePlanetsListContract(page1.body, 'Luke Skywalker');
     assertNoUidOverlapBetweenPages(page1.body, page2.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'people',
       scenario: 'pagination-page-2',
       timed: page2,
@@ -62,7 +62,7 @@ test.describe('API — /people', () => {
     assertValidSchema(detailSchema, timed.body);
     assertPersonDetail(timed.body, { uid: '1', name: 'Luke Skywalker' });
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'people',
       scenario: 'detail-luke',
       timed,
@@ -77,7 +77,7 @@ test.describe('API — /people', () => {
     assertValidSchema(errorSchema, timed.body);
     assertNotFoundBody(timed.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'people',
       scenario: 'error-404-missing-id',
       timed,
@@ -94,7 +94,7 @@ test.describe('API — /people', () => {
     assertValidSchema(errorSchema, timed.body);
     assertNotFoundBody(timed.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'people',
       scenario: 'error-404-malformed-id',
       timed,

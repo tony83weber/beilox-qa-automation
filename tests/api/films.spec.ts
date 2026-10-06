@@ -17,7 +17,7 @@ test.describe('API — /films', () => {
     assertValidSchema(listSchema, timed.body);
     assertFilmsListContract(timed.body, 'A New Hope');
 
-    const saved = swapiClient.saveEvidence({
+    const saved = await swapiClient.saveEvidence({
       resource: 'films',
       scenario: 'happy-path-list',
       timed,
@@ -34,7 +34,7 @@ test.describe('API — /films', () => {
     assertValidSchema(errorSchema, timed.body);
     assertNotFoundBody(timed.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'films',
       scenario: 'error-404-missing-id',
       timed,
@@ -51,7 +51,7 @@ test.describe('API — /films', () => {
     assertValidSchema(errorSchema, timed.body);
     assertNotFoundBody(timed.body);
 
-    swapiClient.saveEvidence({
+    await swapiClient.saveEvidence({
       resource: 'films',
       scenario: 'error-404-malformed-id',
       timed,

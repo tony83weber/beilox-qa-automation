@@ -7,10 +7,20 @@ playwright/.cache/
 allure-results/
 allure-report/
 api-evidence/
+coverage/
+
 .env
+.env.local
+.env.*.local
+
 docs/challenge-worklog.txt
 agent-tools/
 *.log
+*.tsbuildinfo
+
 .DS_Store
+Thumbs.db
 
-
+.vscode/
+.idea/
+.cursor/

@@ -6,5 +6,6 @@ blob-report/
 playwright/.cache/
 .env
 docs/challenge-worklog.txt
+agent-tools/
 *.log
 .DS_Store

@@ -1,9 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
+import { resolveEnvironment } from './src/config/resolve-environment';
 
 dotenv.config();
 
-const baseURL = process.env.BASE_URL ?? 'https://www.centraldepasajes.com.ar';
+const environment = resolveEnvironment();
 const isCI = !!process.env.CI;
 
 export default defineConfig({
@@ -18,17 +19,17 @@ export default defineConfig({
       'allure-playwright',
       {
         resultsDir: 'allure-results',
-        // false = no mostrar Navigate / Wait for selector / Before hooks técnicos.
-        // Solo quedan los test.step de negocio que escribimos nosotros.
         detail: false,
         suiteTitle: true,
         environmentInfo: {
           framework: 'Playwright + TypeScript',
-          base_url: baseURL,
+          test_env: environment.name,
+          ui_base_url: environment.uiBaseUrl,
+          api_base_url: environment.apiBaseUrl,
+          is_live: String(environment.isLive),
         },
       },
     ],
-    // Se mantiene HTML como respaldo; el reporte principal de UI es Allure.
     ['html', { open: 'never' }],
   ],
   timeout: 60_000,
@@ -36,10 +37,8 @@ export default defineConfig({
     timeout: 15_000,
   },
   use: {
-    baseURL,
+    baseURL: environment.uiBaseUrl,
     trace: 'on-first-retry',
-    // Screenshots de aserciones UI (OK/FAIL) se adjuntan a propósito vía uiAssertStep.
-    // Playwright sigue capturando fallos genéricos automáticamente.
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 20_000,
@@ -47,30 +46,34 @@ export default defineConfig({
   },
   projects: [
     {
+      name: 'config',
+      testMatch: /tests\/config\/.*\.spec\.ts/,
+    },
+    {
       name: 'ui-chromium',
       testMatch: /tests\/ui\/.*\.spec\.ts/,
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], baseURL: environment.uiBaseUrl },
     },
     {
       name: 'ui-firefox',
       testMatch: /tests\/ui\/.*\.spec\.ts/,
-      use: { ...devices['Desktop Firefox'] },
+      use: { ...devices['Desktop Firefox'], baseURL: environment.uiBaseUrl },
     },
     {
       name: 'ui-webkit',
       testMatch: /tests\/ui\/.*\.spec\.ts/,
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Desktop Safari'], baseURL: environment.uiBaseUrl },
     },
     {
       name: 'ui-mobile-chromium',
       testMatch: /tests\/ui\/.*\.spec\.ts/,
-      use: { ...devices['Pixel 5'] },
+      use: { ...devices['Pixel 5'], baseURL: environment.uiBaseUrl },
     },
     {
       name: 'api',
       testMatch: /tests\/api\/.*\.spec\.ts/,
       use: {
-        baseURL: process.env.SWAPI_BASE_URL ?? 'https://www.swapi.tech/api',
+        baseURL: environment.apiBaseUrl,
       },
     },
   ],

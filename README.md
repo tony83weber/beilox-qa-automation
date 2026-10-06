@@ -55,6 +55,8 @@ npm ci
 
 | Comando | Qué corre |
 |---------|-----------|
+| `npm run test:config` | Valida resolución de ambientes (`TEST_ENV`) |
+| `npm run test:config:all-envs` | Corre config contra prod + qa + dev |
 | `npm run test:api` | Solo API (project `api`) |
 | `npm run test:ui:chromium` | UI en Chromium |
 | `npm run test:ui:firefox` | UI en Firefox |
@@ -97,21 +99,52 @@ Los happy path de API escriben/actualizan:
 - `api-responses/planets-happy-path.json`
 - `api-responses/films-happy-path.json`
 
+### Multi-ambiente (`dev` / `qa` / `prod`)
+
+Selección por variable (sin tocar tests):
+
+```bash
+TEST_ENV=prod npm run test:ui:chromium   # default; único live hoy
+TEST_ENV=qa   npm run test:config        # prueba que el parámetro QA resuelve bien
+TEST_ENV=dev  npm run test:config
+npm run test:config:all-envs
+```
+
+| Ambiente | ¿Live hoy? | Comportamiento |
+|----------|------------|----------------|
+| `prod` | Sí | UI = Central de Pasajes, API = SWAPI |
+| `qa` | No (placeholder) | Config ok; UI/API se **skippean** hasta definir secrets |
+| `dev` | No (placeholder) | Igual que qa |
+
+Overrides (local o CI secrets) — si están presentes, el ambiente pasa a `isLive=true`:
+
+- Por ambiente: `QA_UI_BASE_URL`, `QA_API_BASE_URL`, `DEV_*`, `PROD_*`
+- Genéricos de la corrida: `UI_BASE_URL`, `API_BASE_URL`
+- Legacy solo en prod: `BASE_URL`, `SWAPI_BASE_URL` (no afectan qa/dev)
+- `API_MAX_RESPONSE_MS`
+
+Catálogo tipado: [`src/config/environments.ts`](src/config/environments.ts)  
+Resolver: [`src/config/resolve-environment.ts`](src/config/resolve-environment.ts)
+
+**CI/CD:** el workflow del lunes corre E2E en `prod`. `workflow_dispatch` permite elegir `prod|qa|dev`. El job `config` valida los 3 ambientes en matrix. Secrets vacíos no pisan el catálogo.
+
 ---
 
 ## Arquitectura
 
 ```
 src/
+  config/         # catálogo + resolve TEST_ENV (dev/qa/prod)
   pages/          # POM: selectores + acciones
   assertions/     # aserciones de dominio (separadas del POM)
   helpers/        # evidencia UI (screenshots Allure)
-  fixtures/       # test.extend → homePage, resultsPage, swapiClient
+  fixtures/       # test.extend → environment, page objects, api client
   api/            # client SWAPI + helper AJV
   schemas/        # schemas AJV
   data/           # datos tipados de búsqueda
   types/
 tests/
+  config/environment.spec.ts
   ui/search.spec.ts
   api/{people,planets,films}.spec.ts
 api-responses/    # bodies happy path
@@ -127,6 +160,7 @@ api-responses/    # bodies happy path
 5. **Credenciales / config** vía `.env` (nunca committeado). El challenge usa URLs públicas; `.env.example` documenta el contrato.
 6. **Tipado estricto** (`strict`, `noImplicitAny`); TypeScript 5.8.
 7. **Allure UI legible:** `allure-playwright` con `detail: false` para ocultar steps técnicos; solo `test.step` de negocio + screenshots en aserciones.
+8. **Multi-ambiente:** `TEST_ENV=dev|qa|prod` + overrides por secrets; E2E solo si `isLive`.
 
 ### UI — escenarios
 
@@ -165,7 +199,7 @@ Archivo: [`.github/workflows/monday-tests.yml`](.github/workflows/monday-tests.y
 - **Sharding:** `npx playwright test --project=ui-chromium --shard=1/4` … `4/4` y merge de blob reports.
 - **Matrix por capa:** no repetir API en cada celda UI (como ya está separado).
 - **Tags:** `@smoke` en PR, full + multi-browser en nightly/lunes.
-- **Secrets:** `BASE_URL`, tokens, etc. solo por GitHub Secrets / Environments; nunca en el YAML.
+- **Secrets / Environments:** `UI_BASE_URL`, `API_BASE_URL` por environment de GitHub (`qa`, `dev`, `prod`); nunca hardcodear en el YAML.
 - **Cache** de `~/.cache/ms-playwright` y `npm`.
 - Retries acotados + alerta al equipo solo tras reintento fallido (ver preguntas teóricas).
 

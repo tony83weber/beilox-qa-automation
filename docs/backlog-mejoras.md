@@ -2,11 +2,11 @@
 
 Notas del candidato (2026-10-06). Revisar mañana; no implementar todavía.
 
-## 1. Multi-ambiente (aunque hoy solo usemos prod)
+## 1. Multi-ambiente — HECHO (`dev` / `qa` / `prod`)
 
-- Soportar ambientes: `qa`, `stg`, `prod` (o `production`).
-- Config por env (URLs UI + API, timeouts) vía `.env` / archivos de config tipados.
-- Hoy solo apuntamos a **producción** (CDP + swapi.tech), pero la estructura debe permitir cambiar con una variable tipo `ENV=qa|stg|prod` sin tocar tests.
+- Catálogo tipado + `TEST_ENV` / overrides `UI_BASE_URL` / `API_BASE_URL`.
+- Tests `tests/config/environment.spec.ts` + CI matrix config + `workflow_dispatch` input.
+- E2E UI/API se skippean si el ambiente no está `isLive` (qa/dev placeholders).
 
 ## 2. Reporte más usable (Allure u otro) — HECHO (UI)
 
@@ -42,9 +42,8 @@ Notas del candidato (2026-10-06). Revisar mañana; no implementar todavía.
 
 ## Orden sugerido (siguiente)
 
-1. Multi-ambiente (estructura, sin inventar URLs falsas de qa/stg).
-2. Evidencia API (status + body) + fechas volátiles.
-3. Pasada de locators con criterio.
+1. Evidencia API (status + body) + fechas volátiles.
+2. Pasada de locators con criterio (revisión fina).
 
 ## Estado actual (baseline)
 

@@ -2,15 +2,63 @@ name: Monday UI + API Tests
 
 on:
   schedule:
-    # Lunes 15:00 ART (GMT-3) = 18:00 UTC
+    # Lunes 15:00 ART (GMT-3) = 18:00 UTC — siempre contra prod live
     - cron: '0 18 * * 1'
   workflow_dispatch:
+    inputs:
+      test_env:
+        description: Ambiente a ejecutar (prod live hoy; qa/dev requieren secrets)
+        type: choice
+        options:
+          - prod
+          - qa
+          - dev
+        default: prod
 
 jobs:
+  config:
+    name: Config — resolve ${{ matrix.test_env }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        test_env: [prod, qa, dev]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate environment resolution
+        run: npx playwright test --project=config
+        env:
+          CI: true
+          TEST_ENV: ${{ matrix.test_env }}
+
   api:
-    name: API suite
+    name: API suite (${{ github.event.inputs.test_env || 'prod' }})
+    needs: config
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      CI: true
+      TEST_ENV: ${{ github.event.inputs.test_env || 'prod' }}
+      # Preferir secrets por ambiente (GitHub Environments) o genéricos de la corrida
+      UI_BASE_URL: ${{ secrets.UI_BASE_URL }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      QA_UI_BASE_URL: ${{ secrets.QA_UI_BASE_URL }}
+      QA_API_BASE_URL: ${{ secrets.QA_API_BASE_URL }}
+      DEV_UI_BASE_URL: ${{ secrets.DEV_UI_BASE_URL }}
+      DEV_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
+      API_MAX_RESPONSE_MS: '5000'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,24 +77,22 @@ jobs:
 
       - name: Run API tests
         run: npx playwright test --project=api
-        env:
-          CI: true
-          SWAPI_BASE_URL: https://www.swapi.tech/api
-          API_MAX_RESPONSE_MS: '5000'
 
       - name: Upload API happy-path JSON + report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: api-artifacts
+          name: api-artifacts-${{ env.TEST_ENV }}
           path: |
             api-responses/
             playwright-report/
             test-results/
+            allure-results/
           if-no-files-found: warn
 
   ui:
-    name: UI — ${{ matrix.project }}
+    name: UI — ${{ matrix.project }} (${{ github.event.inputs.test_env || 'prod' }})
+    needs: config
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -61,6 +107,15 @@ jobs:
             browser: webkit
           - project: ui-mobile-chromium
             browser: chromium
+    env:
+      CI: true
+      TEST_ENV: ${{ github.event.inputs.test_env || 'prod' }}
+      UI_BASE_URL: ${{ secrets.UI_BASE_URL }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      QA_UI_BASE_URL: ${{ secrets.QA_UI_BASE_URL }}
+      QA_API_BASE_URL: ${{ secrets.QA_API_BASE_URL }}
+      DEV_UI_BASE_URL: ${{ secrets.DEV_UI_BASE_URL }}
+      DEV_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,15 +134,12 @@ jobs:
 
       - name: Run UI tests
         run: npx playwright test --project=${{ matrix.project }}
-        env:
-          CI: true
-          BASE_URL: https://www.centraldepasajes.com.ar
 
       - name: Upload UI report + Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ui-report-${{ matrix.project }}
+          name: ui-report-${{ matrix.project }}-${{ env.TEST_ENV }}
           path: |
             allure-results/
             playwright-report/

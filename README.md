@@ -315,3 +315,4 @@ Ver [`docs/theoretical-questions.md`](docs/theoretical-questions.md).
 ## Licencia / uso
 
 Entrega de challenge técnico. Central de Pasajes y SWAPI son sistemas de terceros; las pruebas son de solo lectura / consulta.
+

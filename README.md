@@ -36,7 +36,22 @@ cp .env.example .env
 | `npm run test:ui` | UI en los 4 projects |
 | `npm test` | Toda la suite (UI×4 + API) |
 | `npm run typecheck` | `tsc --noEmit` |
-| `npm run report` | Abre el HTML report |
+| `npm run report` | HTML Playwright (respaldo) |
+| `npm run report:allure` | Genera y abre **Allure** (reporte principal UI) |
+| `npm run report:allure:serve` | Sirve Allure desde `allure-results` |
+
+### Reporte Allure (UI)
+
+Allure muestra **un step por línea** (abrir home, buscar, aserciones) y adjunta **screenshot en OK y en FAIL** alrededor de las expectativas UI (`uiAssertStep`).
+
+```bash
+npm run test:ui:chromium   # deja resultados en allure-results/
+npm run report:allure      # genera allure-report/ y lo abre
+```
+
+Requisito para abrir Allure: **Java** (JRE 8+). En WSL Ubuntu: `sudo apt install -y default-jre`.
+
+La evidencia de **API** sigue siendo los JSON en `api-responses/` (no screenshots).
 
 Los happy path de API escriben/actualizan:
 

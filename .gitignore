@@ -6,9 +6,11 @@ blob-report/
 playwright/.cache/
 allure-results/
 allure-report/
+api-evidence/
 .env
 docs/challenge-worklog.txt
 agent-tools/
 *.log
 .DS_Store
+
 

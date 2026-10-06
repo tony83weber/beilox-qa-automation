@@ -91,13 +91,28 @@ npx --yes serve allure-report -l tcp://0.0.0.0:9324
 En el **browser de Windows** abrí: `http://localhost:9324`  
 Si da connection refused, en WSL corré `hostname -I` y usá `http://<esa-ip>:9324`.
 
-La evidencia de **API** sigue siendo los JSON en `api-responses/` (status/body de happy path), no screenshots.
+### Evidencia y aserciones API
 
-Los happy path de API escriben/actualizan:
+Además del schema AJV y el status/tiempo, las APIs validan **datos de negocio**:
+
+- entidad esperada en el listado (Luke / Tatooine / A New Hope)
+- `uid` únicos en la página
+- paginación people/planets: página 1 y 2 **sin ids repetidos**
+- detalle `people/1` = Luke Skywalker
+
+Evidencia por corrida (gitignore): `api-evidence/{resource}-{scenario}.json` con:
+
+```json
+{ "meta": { "endpoint", "status", "elapsedMs", "environment", "scenario" }, "body": "…enmascarado…" }
+```
+
+Happy path del challenge (commiteable, fechas enmascaradas):
 
 - `api-responses/people-happy-path.json`
 - `api-responses/planets-happy-path.json`
 - `api-responses/films-happy-path.json`
+
+Campos volátiles (`timestamp`, `created`, `edited`) se reemplazan por `"<volatile>"` al guardar.
 
 ### Multi-ambiente (`dev` / `qa` / `prod`)
 

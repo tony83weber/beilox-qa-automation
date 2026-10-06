@@ -5,48 +5,99 @@ import {
   peoplePlanetsListSchema,
   resourceDetailSchema,
 } from '../../src/schemas/swapi.schemas';
+import {
+  assertNoUidOverlapBetweenPages,
+  assertNotFoundBody,
+  assertPeoplePlanetsListContract,
+  assertPersonDetail,
+} from '../../src/assertions/api.assertions';
 
 const listSchema = compileSchema(peoplePlanetsListSchema);
 const detailSchema = compileSchema(resourceDetailSchema);
 const errorSchema = compileSchema(notFoundSchema);
 
 test.describe('API — /people', () => {
-  test('happy path: lista people 200 + schema + tiempo razonable', async ({ swapiClient }) => {
-    const { response, body, elapsedMs } = await swapiClient.getResourceList('people');
+  test('happy path: lista people con contrato, entidad esperada y evidencia', async ({
+    swapiClient,
+  }) => {
+    const timed = await swapiClient.getResourceList('people');
 
-    expect(response.status()).toBe(200);
-    assertValidSchema(listSchema, body);
-    expect(elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+    expect(timed.response.status()).toBe(200);
+    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+    assertValidSchema(listSchema, timed.body);
+    assertPeoplePlanetsListContract(timed.body, 'Luke Skywalker');
 
-    const saved = swapiClient.saveHappyPathBody('people', body);
-    expect(saved).toContain('people-happy-path.json');
+    const saved = swapiClient.saveEvidence({
+      resource: 'people',
+      scenario: 'happy-path-list',
+      timed,
+      updateHappyPath: true,
+    });
+    expect(saved.evidencePath).toContain('people-happy-path-list.json');
+    expect(saved.happyPathPath).toContain('people-happy-path.json');
+  });
+
+  test('paginación: página 1 y 2 no comparten uids', async ({ swapiClient }) => {
+    // SWAPI.tech sin `limit` ignora page y repite página 1 — hay que paginar con limit.
+    const page1 = await swapiClient.getResourceList('people', { page: 1, limit: 10 });
+    const page2 = await swapiClient.getResourceList('people', { page: 2, limit: 10 });
+
+    expect(page1.response.status()).toBe(200);
+    expect(page2.response.status()).toBe(200);
+    assertPeoplePlanetsListContract(page1.body, 'Luke Skywalker');
+    assertNoUidOverlapBetweenPages(page1.body, page2.body);
+
+    swapiClient.saveEvidence({
+      resource: 'people',
+      scenario: 'pagination-page-2',
+      timed: page2,
+    });
+  });
+
+  test('detalle: people/1 es Luke Skywalker', async ({ swapiClient }) => {
+    const timed = await swapiClient.getResourceById('people', 1);
+
+    expect(timed.response.status()).toBe(200);
+    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+    assertValidSchema(detailSchema, timed.body);
+    assertPersonDetail(timed.body, { uid: '1', name: 'Luke Skywalker' });
+
+    swapiClient.saveEvidence({
+      resource: 'people',
+      scenario: 'detail-luke',
+      timed,
+    });
   });
 
   test('error 404: id inexistente', async ({ swapiClient }) => {
-    const { response, body, elapsedMs } = await swapiClient.getResourceById('people', 99999);
+    const timed = await swapiClient.getResourceById('people', 99999);
 
-    expect(response.status()).toBe(404);
-    assertValidSchema(errorSchema, body);
-    expect(elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+    expect(timed.response.status()).toBe(404);
+    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+    assertValidSchema(errorSchema, timed.body);
+    assertNotFoundBody(timed.body);
+
+    swapiClient.saveEvidence({
+      resource: 'people',
+      scenario: 'error-404-missing-id',
+      timed,
+    });
   });
 
   test('error esperado: id malformado responde 404 (SWAPI no expone 400 estable)', async ({
     swapiClient,
   }) => {
-    // Criterio: no inventamos un 400. Documentamos el comportamiento real.
-    const { response, body, elapsedMs } = await swapiClient.getResourceById(
-      'people',
-      'not-a-valid-id',
-    );
+    const timed = await swapiClient.getResourceById('people', 'not-a-valid-id');
 
-    expect(response.status()).toBe(404);
-    assertValidSchema(errorSchema, body);
-    expect(elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
-  });
+    expect(timed.response.status()).toBe(404);
+    expect(timed.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+    assertValidSchema(errorSchema, timed.body);
+    assertNotFoundBody(timed.body);
 
-  test('detalle por id válido (smoke de estructura result.properties)', async ({ swapiClient }) => {
-    const { response, body } = await swapiClient.getResourceById('people', 1);
-    expect(response.status()).toBe(200);
-    assertValidSchema(detailSchema, body);
+    swapiClient.saveEvidence({
+      resource: 'people',
+      scenario: 'error-404-malformed-id',
+      timed,
+    });
   });
 });

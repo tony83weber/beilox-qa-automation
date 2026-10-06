@@ -85,6 +85,7 @@ jobs:
           name: api-artifacts-${{ env.TEST_ENV }}
           path: |
             api-responses/
+            api-evidence/
             playwright-report/
             test-results/
             allure-results/

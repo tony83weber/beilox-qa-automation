@@ -1,12 +1,12 @@
 import { type APIRequestContext, type APIResponse } from '@playwright/test';
-import fs from 'node:fs';
-import path from 'node:path';
 import { getEnv } from '../types/env';
+import { saveApiEvidence, type SaveEvidenceInput } from './api-evidence';
 
 export type TimedResponse = {
   response: APIResponse;
   body: unknown;
   elapsedMs: number;
+  endpoint: string;
 };
 
 export type SwapiResource = 'people' | 'planets' | 'films';
@@ -26,9 +26,10 @@ export class SwapiClient {
   }
 
   async get(pathname: string): Promise<TimedResponse> {
+    const endpointPath = pathname.replace(/^\//, '');
     const url = pathname.startsWith('http')
       ? pathname
-      : `${this.baseUrl}/${pathname.replace(/^\//, '')}`;
+      : `${this.baseUrl}/${endpointPath}`;
     const started = Date.now();
     const response = await this.request.get(url, {
       headers: { Accept: 'application/json' },
@@ -37,22 +38,43 @@ export class SwapiClient {
     const body = (await response.json().catch(async () => ({
       raw: await response.text(),
     }))) as unknown;
-    return { response, body, elapsedMs };
+    return {
+      response,
+      body,
+      elapsedMs,
+      endpoint: `GET /${endpointPath}`,
+    };
   }
 
-  async getResourceList(resource: SwapiResource): Promise<TimedResponse> {
-    return this.get(resource);
+  async getResourceList(
+    resource: SwapiResource,
+    query?: { page?: number; limit?: number },
+  ): Promise<TimedResponse> {
+    const params = new URLSearchParams();
+    if (query?.page) params.set('page', String(query.page));
+    if (query?.limit) params.set('limit', String(query.limit));
+    const qs = params.toString();
+    return this.get(qs ? `${resource}?${qs}` : resource);
   }
 
   async getResourceById(resource: SwapiResource, id: string | number): Promise<TimedResponse> {
     return this.get(`${resource}/${id}`);
   }
 
-  saveHappyPathBody(resource: SwapiResource, body: unknown): string {
-    const dir = path.resolve(process.cwd(), 'api-responses');
-    fs.mkdirSync(dir, { recursive: true });
-    const filePath = path.join(dir, `${resource}-happy-path.json`);
-    fs.writeFileSync(filePath, `${JSON.stringify(body, null, 2)}\n`, 'utf8');
-    return filePath;
+  saveEvidence(
+    input: Omit<SaveEvidenceInput, 'status' | 'elapsedMs' | 'body' | 'endpoint'> & {
+      timed: TimedResponse;
+      updateHappyPath?: boolean;
+    },
+  ): ReturnType<typeof saveApiEvidence> {
+    return saveApiEvidence({
+      resource: input.resource,
+      scenario: input.scenario,
+      endpoint: input.timed.endpoint,
+      status: input.timed.response.status(),
+      elapsedMs: input.timed.elapsedMs,
+      body: input.timed.body,
+      updateHappyPath: input.updateHappyPath,
+    });
   }
 }

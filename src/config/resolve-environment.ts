@@ -77,13 +77,3 @@ export function resolveEnvironment(
     isLive: base.isLive || urlOverridden,
   };
 }
-
-export function requireLiveEnvironment(config: EnvironmentConfig): void {
-  if (!config.isLive) {
-    throw new Error(
-      `El ambiente "${config.name}" no está marcado como live. ` +
-        `Definí ${config.name.toUpperCase()}_UI_BASE_URL / ${config.name.toUpperCase()}_API_BASE_URL ` +
-        `(o UI_BASE_URL/API_BASE_URL), o usá TEST_ENV=prod.`,
-    );
-  }
-}

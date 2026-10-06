@@ -1,5 +1,5 @@
 import { type APIRequestContext, type APIResponse } from '@playwright/test';
-import { getEnv } from '../types/env';
+import { getEnvironmentConfig } from '../types/env';
 import { saveApiEvidence, type SaveEvidenceInput } from './api-evidence';
 
 export type TimedResponse = {
@@ -16,8 +16,8 @@ export class SwapiClient {
   private readonly maxResponseMs: number;
 
   constructor(private readonly request: APIRequestContext) {
-    const env = getEnv();
-    this.baseUrl = env.swapiBaseUrl.replace(/\/$/, '');
+    const env = getEnvironmentConfig();
+    this.baseUrl = env.apiBaseUrl.replace(/\/$/, '');
     this.maxResponseMs = env.apiMaxResponseMs;
   }
 
@@ -35,9 +35,8 @@ export class SwapiClient {
       headers: { Accept: 'application/json' },
     });
     const elapsedMs = Date.now() - started;
-    const body = (await response.json().catch(async () => ({
-      raw: await response.text(),
-    }))) as unknown;
+    const isJson = (response.headers()['content-type'] ?? '').includes('application/json');
+    const body: unknown = isJson ? await response.json() : { raw: await response.text() };
     return {
       response,
       body,

@@ -23,7 +23,7 @@ test.describe('UI — Búsqueda de pasajes', () => {
         await resultsPage.waitForResultsSettled();
       });
 
-      await expectValidSearchResults(page, resultsPage);
+      await expectValidSearchResults(page, resultsPage, validSearch);
     },
   );
 
@@ -71,7 +71,7 @@ test.describe('UI — Búsqueda de pasajes', () => {
         await homePage.search(validSearch);
         await resultsPage.waitForResultsSettled();
       });
-      await expectValidSearchResults(page, resultsPage);
+      await expectValidSearchResults(page, resultsPage, validSearch);
 
       await test.step('Vuelve atrás con el navegador', async () => {
         await homePage.goBack();

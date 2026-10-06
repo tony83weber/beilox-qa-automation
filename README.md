@@ -65,7 +65,7 @@ npm ci
 | `npm run test:ui:webkit` | UI en WebKit |
 | `npm run test:ui:mobile` | UI emulando **Pixel 5** |
 | `npm run test:ui` | UI en los 4 projects |
-| `npm test` | Toda la suite (UI×4 + API) |
+| `npm test` | Toda la suite: 40 tests (UI×4 = 16, API = 12, config = 12) |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run report` | HTML Playwright (respaldo técnico) |
 | `npm run report:allure:generate` | Genera Allure estático en `allure-report/` |
@@ -186,7 +186,7 @@ docs/             # teóricas, locators, bug report, evidencia MCP, flujo git
 
 | Escenario | Criterio |
 |-----------|----------|
-| Búsqueda válida | Retiro (BA) → Mar del Plata, fecha futura → lista `#servicios` y textos coherentes |
+| Búsqueda válida | Retiro (BA) → Mar del Plata, fecha futura → hay servicios con precio, y la pantalla refleja **todos** los parámetros: ruta en la URL y en el título, fecha (`FIda`) y pasajeros (`CntPas`) |
 | Sin resultados | Ushuaia → La Quiaca → mensaje “No encontramos opciones…” |
 | Datos inválidos | Submit vacío → permanece en home + mensajes “Completá el Origen / Destino / la fecha” |
 | Volver atrás | Resultados → `goBack` → buscador usable |
@@ -233,11 +233,16 @@ Central de Pasajes es **prod público**: ads, promos, Select2, datepicker. Mitig
 
 ### API — escenarios (por endpoint)
 
-Para `/people`, `/planets`, `/films`:
+**Todas** las pruebas validan status code, schema AJV y tiempo &lt; `API_MAX_RESPONSE_MS`.
 
-1. Happy path (lista) → 200 + schema AJV + tiempo &lt; `API_MAX_RESPONSE_MS` + persistencia JSON
-2. 404 id inexistente
-3. Segundo error: id malformado → **404 real** (SWAPI **no expone 400 estable**; no lo inventamos)
+| Test | `/people` | `/planets` | `/films` |
+|------|:---------:|:----------:|:--------:|
+| Happy path (lista) + persistencia JSON | ✅ | ✅ | ✅ |
+| Paginación: página 1 y 2 sin uids repetidos | ✅ | ✅ | — |
+| Detalle (`people/1` = Luke Skywalker) | ✅ | — | — |
+| Error 404: id inexistente | ✅ | ✅ | ✅ |
+| Error 404: id malformado (**SWAPI no expone 400 estable**; no lo inventamos) | ✅ | ✅ | ✅ |
+| **Total** | 5 | 4 | 3 |
 
 Nota: el listado de `films` usa `result[]`, mientras `people`/`planets` usan `results[]`. Los schemas reflejan esa diferencia.
 

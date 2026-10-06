@@ -81,7 +81,7 @@ Config para usarlos desde Cursor / Claude Code (`mcp.json`):
 
 → La opción se elige con `getByRole('treeitem').filter({ hasText })`. Se eliminó el fallback que, si no encontraba la opción, clickeaba la primera (podía elegir una terminal equivocada sin fallar).
 
-**d) Controles sin nombre accesible** (botón invertir origen/destino, pasajeros, bullets del carrusel) → bug de producto: [`../bug-report-a11y-controles-sin-nombre.md`](../bug-report-a11y-controles-sin-nombre.md).
+**d) Controles sin un nombre accesible útil** → bug de producto: [`../bug-report-a11y-controles-sin-nombre.md`](../bug-report-a11y-controles-sin-nombre.md). El snapshot mostró `button [ref=e42]` sin nombre visible; al confirmarlo en el DOM resultó que su nombre es “Flecha” (sale del `alt` de la imagen), así que el bug quedó reportado como “nombre que no describe la acción”. Pasajeros y los bullets del carrusel sí están sin nombre. La lección: el snapshot sirve para detectar candidatos, pero el bug se confirma contra el DOM antes de reportarlo.
 
 **Lo que MCP no mostró y encontró el test:** el nombre accesible de los combobox Select2 es el valor seleccionado. En el escenario “volver atrás” el navegador restaura la selección y el nombre cambia, así que `getByRole('combobox', { name })` no sirve ahí. Origen/Destino quedaron anclados a `aria-labelledby`.
 

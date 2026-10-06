@@ -44,8 +44,11 @@ test.describe('API — /people', { tag: ['@api', '@regression'] }, () => {
     const page1 = await swapiClient.getResourceList('people', { page: 1, limit: 10 });
     const page2 = await swapiClient.getResourceList('people', { page: 2, limit: 10 });
 
-    expect(page1.response.status()).toBe(200);
-    expect(page2.response.status()).toBe(200);
+    for (const page of [page1, page2]) {
+      expect(page.response.status()).toBe(200);
+      expect(page.elapsedMs).toBeLessThan(swapiClient.getMaxResponseMs());
+      assertValidSchema(listSchema, page.body);
+    }
     assertPeoplePlanetsListContract(page1.body, 'Luke Skywalker');
     assertNoUidOverlapBetweenPages(page1.body, page2.body);
 

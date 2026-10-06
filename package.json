@@ -2,7 +2,7 @@
   "name": "beilox-qa-automation-challenge",
   "version": "1.0.0",
   "private": true,
-  "description": "Challenge técnico Beilox — QA Automation Senior (Playwright + TypeScript)",
+  "description": "Challenge técnico Beilox — QA Automation (Playwright + TypeScript)",
   "scripts": {
     "test": "playwright test",
     "test:smoke": "playwright test --grep @smoke",

@@ -1,4 +1,4 @@
-# Beilox — Challenge QA Automation Senior
+# Beilox — Challenge QA Automation
 
 Framework de pruebas automatizadas con **Playwright + TypeScript** (strict), cubriendo:
 

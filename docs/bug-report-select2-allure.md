@@ -52,6 +52,6 @@ Referencia: [`src/pages/home.page.ts`](../src/pages/home.page.ts), [`src/pages/s
 - Evitar dejar `--open` tras selección (accesibilidad + testability).
 - Ambiente staging estable (sin ads/promos de prod) para bajar ruido E2E.
 
-## Criterio QA Senior
+## Criterio QA
 
 Un **passed** con steps rojos no es señal usable. O se arregla el wait, o se documenta el bug del widget; no se esconde con `catch` silencioso.

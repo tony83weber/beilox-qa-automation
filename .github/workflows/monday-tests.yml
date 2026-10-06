@@ -1,0 +1,94 @@
+name: Monday UI + API Tests
+
+on:
+  schedule:
+    # Lunes 15:00 ART (GMT-3) = 18:00 UTC
+    - cron: '0 18 * * 1'
+  workflow_dispatch:
+
+jobs:
+  api:
+    name: API suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium (API request context)
+        run: npx playwright install --with-deps chromium
+
+      - name: Run API tests
+        run: npx playwright test --project=api
+        env:
+          CI: true
+          SWAPI_BASE_URL: https://www.swapi.tech/api
+          API_MAX_RESPONSE_MS: '5000'
+
+      - name: Upload API happy-path JSON + report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-artifacts
+          path: |
+            api-responses/
+            playwright-report/
+            test-results/
+          if-no-files-found: warn
+
+  ui:
+    name: UI — ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: ui-chromium
+            browser: chromium
+          - project: ui-firefox
+            browser: firefox
+          - project: ui-webkit
+            browser: webkit
+          - project: ui-mobile-chromium
+            browser: chromium
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run UI tests
+        run: npx playwright test --project=${{ matrix.project }}
+        env:
+          CI: true
+          BASE_URL: https://www.centraldepasajes.com.ar
+
+      - name: Upload UI report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-report-${{ matrix.project }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: warn

@@ -49,18 +49,9 @@ export async function expectEmptySearchBlocked(page: Page, homePage: HomePage): 
     async () => {
       await expect(page).toHaveURL(/centraldepasajes\.com\.ar\/?$/i);
       await expect(homePage.searchButton).toBeVisible();
-
-      const invalidFields = await page.evaluate(() =>
-        Array.from(
-          document.querySelectorAll(
-            '#PadOrigen:invalid, #PadDestino:invalid, #fechaPartida:invalid',
-          ),
-        ).map((el) => el.id),
-      );
-      expect(invalidFields.length).toBeGreaterThan(0);
-      expect(invalidFields).toEqual(
-        expect.arrayContaining(['PadOrigen', 'PadDestino', 'fechaPartida']),
-      );
+      await expect(homePage.originRequiredMessage).toBeVisible();
+      await expect(homePage.destinationRequiredMessage).toBeVisible();
+      await expect(homePage.dateRequiredMessage).toBeVisible();
     },
   );
 }

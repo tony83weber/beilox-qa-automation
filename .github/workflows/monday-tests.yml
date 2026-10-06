@@ -1,6 +1,9 @@
 name: Monday UI + API Tests
 
 on:
+  # Gate del PR: smoke (API + UI Chromium). La regresión multi-browser queda para el cron.
+  pull_request:
+    branches: [main]
   schedule:
     # Lunes 15:00 ART (GMT-3) = 18:00 UTC — siempre contra prod live, suite full
     - cron: '0 18 * * 1'
@@ -21,6 +24,10 @@ on:
           - smoke
           - full
         default: full
+
+concurrency:
+  group: tests-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   config:
@@ -51,14 +58,14 @@ jobs:
           TEST_ENV: ${{ matrix.test_env }}
 
   api:
-    name: API ${{ github.event.inputs.suite || 'full' }} (${{ github.event.inputs.test_env || 'prod' }})
+    name: API ${{ github.event.inputs.suite || (github.event_name == 'pull_request' && 'smoke' || 'full') }} (${{ github.event.inputs.test_env || 'prod' }})
     needs: config
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
       CI: true
       TEST_ENV: ${{ github.event.inputs.test_env || 'prod' }}
-      SUITE: ${{ github.event.inputs.suite || 'full' }}
+      SUITE: ${{ github.event.inputs.suite || (github.event_name == 'pull_request' && 'smoke' || 'full') }}
       UI_BASE_URL: ${{ secrets.UI_BASE_URL }}
       API_BASE_URL: ${{ secrets.API_BASE_URL }}
       QA_UI_BASE_URL: ${{ secrets.QA_UI_BASE_URL }}
@@ -79,8 +86,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Resolve Playwright version
+        id: pw
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}-chromium
+
       - name: Install Playwright Chromium (API request context)
+        if: steps.pw-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright OS deps (browser from cache)
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
 
       - name: Run API tests (smoke)
         if: env.SUITE == 'smoke'
@@ -104,7 +127,7 @@ jobs:
           if-no-files-found: warn
 
   ui:
-    name: UI — ${{ matrix.project }} ${{ github.event.inputs.suite || 'full' }} (${{ github.event.inputs.test_env || 'prod' }})
+    name: UI — ${{ matrix.project }} ${{ github.event.inputs.suite || (github.event_name == 'pull_request' && 'smoke' || 'full') }} (${{ github.event.inputs.test_env || 'prod' }})
     needs: config
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -127,7 +150,7 @@ jobs:
     env:
       CI: true
       TEST_ENV: ${{ github.event.inputs.test_env || 'prod' }}
-      SUITE: ${{ github.event.inputs.suite || 'full' }}
+      SUITE: ${{ github.event.inputs.suite || (github.event_name == 'pull_request' && 'smoke' || 'full') }}
       UI_BASE_URL: ${{ secrets.UI_BASE_URL }}
       API_BASE_URL: ${{ secrets.API_BASE_URL }}
       QA_UI_BASE_URL: ${{ secrets.QA_UI_BASE_URL }}
@@ -159,9 +182,26 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         run: npm ci
 
-      - name: Install Playwright browser
+      - name: Resolve Playwright version
         if: steps.gate.outputs.run == 'true'
+        id: pw
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        if: steps.gate.outputs.run == 'true'
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}-${{ matrix.browser }}
+
+      - name: Install Playwright browser
+        if: steps.gate.outputs.run == 'true' && steps.pw-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Install Playwright OS deps (browser from cache)
+        if: steps.gate.outputs.run == 'true' && steps.pw-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps ${{ matrix.browser }}
 
       - name: Run UI tests (smoke)
         if: steps.gate.outputs.run == 'true' && env.SUITE == 'smoke'

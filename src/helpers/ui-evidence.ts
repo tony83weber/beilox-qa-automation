@@ -8,7 +8,8 @@ export async function attachUiScreenshot(page: Page, label: string): Promise<voi
   if (page.isClosed()) {
     return;
   }
-  const body = await page.screenshot({ fullPage: true, type: 'png' });
+  // Viewport y no fullPage: con listas largas de resultados WebKit supera el máximo de 32767 px.
+  const body = await page.screenshot({ type: 'png' });
   await test.info().attach(label, {
     body,
     contentType: 'image/png',

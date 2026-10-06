@@ -1,0 +1,926 @@
+- generic [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link [ref=e5] [cursor=pointer]:
+        - /url: "#"
+        - img "Central de Pasajes" [ref=e7]
+      - generic:
+        - paragraph [ref=e8]:
+          - link [ref=e9] [cursor=pointer]:
+            - /url: ../ayuda
+            - img "Ayuda" [ref=e10]
+        - generic [ref=e11]:
+          - link [ref=e12] [cursor=pointer]:
+            - /url: /cdp/devolver-pasajes.aspx
+            - img "Devolver" [ref=e13]
+            - text: Devolver mi pasaje
+          - link [ref=e14] [cursor=pointer]:
+            - /url: /cdp/reenviar-pasajes.aspx
+            - img "Reenviar" [ref=e15]
+            - text: Reenviar mi pasaje
+  - generic [ref=e19]:
+    - alert "Central de Pasajes" [ref=e21]:
+      - link "close" [ref=e22] [cursor=pointer]:
+        - /url: javascript:void();
+        - text: ×
+      - paragraph [ref=e23]:
+        - generic [ref=e24]:
+          - strong [ref=e25]: ¡Escapate el finde largo!
+          - text: Sacá tus pasajes desde la
+        - link "APP." [ref=e26] [cursor=pointer]:
+          - /url: https://www.centraldepasajes.com.ar/promociones/redirect-app-store.html
+        - generic [ref=e27]:
+          - text: y aprovechá hasta
+          - strong [ref=e28]: 6 cuotas sin interés.
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - heading "Buscá tu pasaje en micro" [level=1] [ref=e32]
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]: Origen
+            - textbox [aria-hidden] [ref=e36]:
+              - /placeholder: Ingresá desde dónde viajás
+            - list [ref=e562]:
+              - listitem [ref=e563]: Completá el Origen de tu viaje
+            - combobox "Ingresá desde dónde viajás" [expanded] [ref=e39] [cursor=pointer]:
+              - tree [ref=e568]:
+                - treeitem "(BUE) Buenos Aires. Terminal Retiro (Capital Federal) (Argentina)" [ref=e580]
+                - treeitem "(DELE) Buenos Aires. Terminal Dellepiane (Capital Federal) (Argentina)" [ref=e581]
+                - treeitem "(MDP) Mar del Plata Terminal (Buenos Aires) (Argentina)" [ref=e582]
+                - treeitem "(SMI) San Miguel (Buenos Aires) (Argentina)" [ref=e583]
+                - treeitem "(MCHI) Mar Chiquita (Buenos Aires) (Argentina)" [ref=e584]
+                - treeitem "(RTSM) San Miguel Rotonda (Buenos Aires) (Argentina)" [ref=e585]
+                - treeitem "(TRE) Tres Arroyos (Buenos Aires) (Argentina)" [ref=e586]
+                - treeitem "(QLME) Terminal Quilmes (Buenos Aires) (Argentina)" [ref=e587]
+                - treeitem "(PERG) Pergamino (Buenos Aires) (Argentina)" [ref=e588]
+                - treeitem "(TGRE) Tigre (Buenos Aires) (Argentina)" [ref=e589]
+                - treeitem "(SAPE) San Pedro (Buenos Aires) (Argentina)" [ref=e590]
+                - treeitem "(RDE) Remedios de Escalada (Buenos Aires) (Argentina)" [ref=e591]
+                - treeitem "(CLON) Colon (Buenos Aires) (Argentina)" [ref=e592]
+                - treeitem "(LUJ) Lujan (Buenos Aires) (Argentina)" [ref=e593]
+                - treeitem "(LANU) Lanus (Buenos Aires) (Argentina)" [ref=e594]
+                - treeitem "(MASU) Mar del Sur (Buenos Aires) (Argentina)" [ref=e595]
+                - treeitem "(SBE) San Bernardo (Buenos Aires) (Argentina)" [ref=e596]
+                - treeitem "(VPR) Burzaco El Vapor (Buenos Aires) (Argentina)" [ref=e597]
+                - treeitem "(QUI) Quilmes (Buenos Aires) (Argentina)" [ref=e598]
+                - treeitem "(JUN) Junin Terminal (Buenos Aires) (Argentina)" [ref=e599]
+                - treeitem "(BBL) Bahia Blanca Terminal (Buenos Aires) (Argentina)" [ref=e600]
+                - treeitem "(CAS) Castelli (Buenos Aires) (Argentina)" [ref=e601]
+                - treeitem "(DOL) Dolores (Buenos Aires) (Argentina)" [ref=e602]
+                - treeitem "(VAR) Florencio Varela (Buenos Aires) (Argentina)" [ref=e603]
+                - treeitem "(AVE) Avellaneda (Buenos Aires) (Argentina)" [ref=e604]
+                - treeitem "(MRD) Mercedes (Buenos Aires) (Argentina)" [ref=e605]
+                - treeitem "(LMZ) Lomas de Zamora (Buenos Aires) (Argentina)" [ref=e606]
+                - treeitem "(VIG) Villa Gesell (Buenos Aires) (Argentina)" [ref=e607]
+                - treeitem "(SNI) San Nicolas Parador (Buenos Aires) (Argentina)" [ref=e608]
+                - treeitem "(PAELT) Terminal El Talar de Pacheco (Buenos Aires) (Argentina)" [ref=e609]
+                - treeitem "(9060) Ciudadela Via Libre (Buenos Aires) (Argentina)" [ref=e610]
+                - treeitem "(9DJ) 9 de Julio (Buenos Aires) (Argentina)" [ref=e611]
+                - treeitem "(LANK) Lanus 2 (Buenos Aires) (Argentina)" [ref=e612]
+                - treeitem "(SMO) San Miguel del Monte (Buenos Aires) (Argentina)" [ref=e613]
+                - treeitem "(LANM) Lanus M (Buenos Aires) (Argentina)" [ref=e614]
+                - treeitem "(SMA) San Miguel del Monte Acceso (Buenos Aires) (Argentina)" [ref=e615]
+                - treeitem "(MROT) Moron Terminal Nueva (Buenos Aires) (Argentina)" [ref=e616]
+                - treeitem "(SANM) San Martin (Buenos Aires) (Argentina)" [ref=e617]
+                - treeitem "(MDT) Mar del Tuyu (Buenos Aires) (Argentina)" [ref=e618]
+                - treeitem "(STE) Santa Teresita (Buenos Aires) (Argentina)" [ref=e619]
+                - treeitem "(LPN) Burzaco Los Pinos (Buenos Aires) (Argentina)" [ref=e620]
+                - treeitem "(MDA) Mar de Ajo (Buenos Aires) (Argentina)" [ref=e621]
+                - treeitem "(MSH) Moron Shopping (Buenos Aires) (Argentina)" [ref=e622]
+                - treeitem "(TRLM) Tres Lomas (Buenos Aires) (Argentina)" [ref=e623]
+                - treeitem "(RSJ) San Justo Rotonda (Buenos Aires) (Argentina)" [ref=e624]
+                - treeitem "(MNO) Moreno (Buenos Aires) (Argentina)" [ref=e625]
+                - treeitem "(AZU) Azul (Buenos Aires) (Argentina)" [ref=e626]
+                - treeitem "(GRAL) General Alvear (Buenos Aires) (Argentina)" [ref=e627]
+                - treeitem "(MIR) Miramar Terminal (Buenos Aires) (Argentina)" [ref=e628]
+                - treeitem "(SJCE) San Justo Centro (Buenos Aires) (Argentina)" [ref=e629]
+                - treeitem "(SCL) Santa Clara del Mar (Buenos Aires) (Argentina)" [ref=e630]
+                - treeitem "(LAT) Las Toninas (Buenos Aires) (Argentina)" [ref=e631]
+                - treeitem "(AGV) Aguas Verdes (Buenos Aires) (Argentina)" [ref=e632]
+                - treeitem "(LAL) La Lucila del Mar (Buenos Aires) (Argentina)" [ref=e633]
+                - treeitem "(MOG) Punta Mogotes (Buenos Aires) (Argentina)" [ref=e634]
+                - treeitem "(CHL) Chapadmalal (Buenos Aires) (Argentina)" [ref=e635]
+                - treeitem "(RRE) Arrecifes (Buenos Aires) (Argentina)" [ref=e636]
+                - treeitem "(9051) Villa Tesei - Vergara y Gaona (Buenos Aires) (Argentina)" [ref=e637]
+                - treeitem "(VTE) Villa Tesei - Vergara y Gaona 3 (Buenos Aires) (Argentina)" [ref=e638]
+                - treeitem "(TER) Villa Tesei - Vergara y Gaona 4 (Buenos Aires) (Argentina)" [ref=e639]
+                - treeitem "(SL1) Salto (Buenos Aires) (Argentina)" [ref=e640]
+                - treeitem "(ROJ) Rojas (Buenos Aires) (Argentina)" [ref=e641]
+                - treeitem "(PAR) Pinamar Terminal (Buenos Aires) (Argentina)" [ref=e642]
+                - treeitem "(BGD) Bragado (Buenos Aires) (Argentina)" [ref=e643]
+                - treeitem "(LBOS) Lobos (Buenos Aires) (Argentina)" [ref=e644]
+                - treeitem "(WIL) Wilde (Buenos Aires) (Argentina)" [ref=e645]
+                - treeitem "(LFL) Las Flores (Buenos Aires) (Argentina)" [ref=e646]
+                - treeitem "(VED) Vedia (Buenos Aires) (Argentina)" [ref=e647]
+                - treeitem "(TQL) Trenque Lauquen (Buenos Aires) (Argentina)" [ref=e648]
+                - treeitem "(GRVI) General Villegas (Buenos Aires) (Argentina)" [ref=e649]
+                - treeitem "(ZAR) Zarate (Buenos Aires) (Argentina)" [ref=e650]
+                - treeitem "(BARA) Baradero (Buenos Aires) (Argentina)" [ref=e651]
+                - treeitem "(ITU) Ituzaingó (Buenos Aires) (Argentina)" [ref=e652]
+                - treeitem "(GRPT) General Pinto (Buenos Aires) (Argentina)" [ref=e653]
+                - treeitem "(RAMA) Ramallo (Buenos Aires) (Argentina)" [ref=e654]
+                - treeitem "(SARM) Capitan Sarmiento (Buenos Aires) (Argentina)" [ref=e655]
+                - treeitem "(SCN) San Clemente del Tuyu (Buenos Aires) (Argentina)" [ref=e656]
+                - treeitem "(HISI) San Isidro (Buenos Aires) (Argentina)" [ref=e657]
+                - treeitem "(SUA) Coronel Suarez (Buenos Aires) (Argentina)" [ref=e658]
+                - treeitem "(GBL) General Belgrano (Buenos Aires) (Argentina)" [ref=e659]
+                - treeitem "(GUA) Guamini (Buenos Aires) (Argentina)" [ref=e660]
+                - treeitem "(EZA) Ezeiza (Buenos Aires) (Argentina)" [ref=e661]
+                - treeitem "(LPT) La Plata Terminal (Buenos Aires) (Argentina)" [ref=e662]
+                - treeitem "(NEC) Necochea Terminal (Buenos Aires) (Argentina)" [ref=e663]
+                - treeitem "(CHA) Chascomus (Buenos Aires) (Argentina)" [ref=e664]
+                - treeitem "(SAC) San Antonio de Areco (Buenos Aires) (Argentina)" [ref=e665]
+                - treeitem "(TLQ) Trenque Lauquen Acceso (Buenos Aires) (Argentina)" [ref=e666]
+                - treeitem "(EPL) El Palomar (Buenos Aires) (Argentina)" [ref=e667]
+                - treeitem "(9072) Puente La Noria (Buenos Aires) (Argentina)" [ref=e668]
+                - treeitem "(ELG) El Carmen (Buenos Aires) (Argentina)" [ref=e669]
+                - treeitem "(CFH) Chapaleofu (Buenos Aires) (Argentina)" [ref=e670]
+                - treeitem "(AHY) Estacion Arroyo los Huesos (Buenos Aires) (Argentina)" [ref=e671]
+                - treeitem "(AZC) La Corina (Buenos Aires) (Argentina)" [ref=e672]
+                - treeitem "(LAZ) Lazzarino (Buenos Aires) (Argentina)" [ref=e673]
+                - treeitem "(SEZ) San Esteban (Buenos Aires) (Argentina)" [ref=e674]
+                - treeitem "(VRAM) Villa Ramallo (Buenos Aires) (Argentina)" [ref=e675]
+                - treeitem "(BAPT) Baradero Petrobras (Buenos Aires) (Argentina)" [ref=e676]
+                - treeitem "(30DA) 30 de Agosto (Buenos Aires) (Argentina)" [ref=e677]
+                - treeitem "(AYAC) Ayacucho (Buenos Aires) (Argentina)" [ref=e678]
+                - treeitem "(BRN) Bernal (Buenos Aires) (Argentina)" [ref=e679]
+                - treeitem "(CASE) Caseros (Buenos Aires) (Argentina)" [ref=e680]
+                - treeitem "(HUR) Hurlingham (Buenos Aires) (Argentina)" [ref=e681]
+                - treeitem "(RFM) Francisco Madero (Buenos Aires) (Argentina)" [ref=e682]
+                - treeitem "(TPZO) Tropezon (Buenos Aires) (Argentina)" [ref=e683]
+                - treeitem "(ANTR) Anta y De la Torre - Zarate (Buenos Aires) (Argentina)" [ref=e684]
+                - treeitem "(COMO) Moreno Colectora (Buenos Aires) (Argentina)" [ref=e685]
+                - treeitem "(CRFV) Terminal Florencio Varela Cruce (Buenos Aires) (Argentina)" [ref=e686]
+                - treeitem "(GONN) Gonnet (Buenos Aires) (Argentina)" [ref=e687]
+                - treeitem "(GIL) San Andres de Giles (Buenos Aires) (Argentina)" [ref=e688]
+                - treeitem "(CHO) Chacabuco (Buenos Aires) (Argentina)" [ref=e689]
+                - treeitem "(BRA) Brandsen (Buenos Aires) (Argentina)" [ref=e690]
+                - treeitem "(SVIC) San Vicente (Buenos Aires) (Argentina)" [ref=e691]
+                - treeitem "(MNOC) Moreno Centro (Buenos Aires) (Argentina)" [ref=e692]
+                - treeitem "(LLAVA) Llavallol (Buenos Aires) (Argentina)" [ref=e693]
+                - treeitem "(SALA) Saladillo (Buenos Aires) (Argentina)" [ref=e694]
+                - treeitem "(ECB) Escobar (Buenos Aires) (Argentina)" [ref=e695]
+                - treeitem "(9038) Puente Saavedra (Buenos Aires) (Argentina)" [ref=e696]
+                - treeitem "(9055) Av Fondo de la Legua/Thames y Panamericana (Buenos Aires) (Argentina)" [ref=e697]
+                - treeitem "(9056) Baradero Puma (Buenos Aires) (Argentina)" [ref=e698]
+                - treeitem "(ALF) Las Flores Parador (Buenos Aires) (Argentina)" [ref=e699]
+                - treeitem "(LBT) Libertad (Buenos Aires) (Argentina)" [ref=e700]
+                - treeitem "(PRI) Coronel Pringles (Buenos Aires) (Argentina)" [ref=e701]
+                - treeitem "(VIBA) Villa Ballester I (Buenos Aires) (Argentina)" [ref=e702]
+                - treeitem "(9036) Olmos (Buenos Aires) (Argentina)" [ref=e703]
+                - treeitem "(OLA) Olavarria (Buenos Aires) (Argentina)" [ref=e704]
+                - treeitem "(OLS) Olivos (Buenos Aires) (Argentina)" [ref=e705]
+                - treeitem "(OLTC) Olivos Tren de La Costa (Buenos Aires) (Argentina)" [ref=e706]
+                - treeitem "(AARO) Agustin Roca Acceso (Buenos Aires) (Argentina)" [ref=e707]
+                - treeitem "(BOL) Bolivar (Buenos Aires) (Argentina)" [ref=e708]
+                - treeitem "(URD) Urdampilleta (Buenos Aires) (Argentina)" [ref=e709]
+                - treeitem "(LENS) La Ensenada (Buenos Aires) (Argentina)" [ref=e710]
+                - treeitem "(BERI) Berisso (Buenos Aires) (Argentina)" [ref=e711]
+                - treeitem "(CANACC) Cañada Seca Acceso (Buenos Aires) (Argentina)" [ref=e712]
+                - treeitem "(AZAC) Azul (Hotel La Estrella) Acceso (Buenos Aires) (Argentina)" [ref=e713]
+                - treeitem "(VBAB) Villa Ballester Ball Tour (Buenos Aires) (Argentina)" [ref=e714]
+                - treeitem "(ABRA) Brandsen Acceso (Buenos Aires) (Argentina)" [ref=e715]
+                - treeitem "(ACVN) San Vicente Acceso (Buenos Aires) (Argentina)" [ref=e716]
+                - treeitem "(ABRG) Bragado Acceso (Buenos Aires) (Argentina)" [ref=e717]
+                - treeitem "(VESN) Villa España (Buenos Aires) (Argentina)" [ref=e718]
+                - treeitem "(HUD) Hudson (Buenos Aires) (Argentina)" [ref=e719]
+                - treeitem "(SALAC) Saladillo Acceso (Buenos Aires) (Argentina)" [ref=e720]
+                - treeitem "(RTALA) Rio Tala (Buenos Aires) (Argentina)" [ref=e721]
+                - treeitem "(SNIC) San Nicolas (Buenos Aires) (Argentina)" [ref=e722]
+                - treeitem "(LPLM) Las Palmas (Buenos Aires) (Argentina)" [ref=e723]
+                - treeitem "(RLGH) Estacion Ranelagh (Buenos Aires) (Argentina)" [ref=e724]
+                - treeitem "(ACO) Chacabuco Acceso (Buenos Aires) (Argentina)" [ref=e725]
+                - treeitem "(AAZ) Azul Acceso (Buenos Aires) (Argentina)" [ref=e726]
+                - treeitem "(SLC) San Francisco Solano Cruce (Buenos Aires) (Argentina)" [ref=e727]
+                - treeitem "(DBAC) De Bary Acceso (Buenos Aires) (Argentina)" [ref=e728]
+                - treeitem "(SPLG) San Pedro Parador La Granja (Buenos Aires) (Argentina)" [ref=e729]
+                - treeitem "(ACSO) Solis Acceso (Buenos Aires) (Argentina)" [ref=e730]
+                - treeitem "(CPR) Pirovano Cruce (Buenos Aires) (Argentina)" [ref=e731]
+                - treeitem "(CSP) Suipacha Cruce (Buenos Aires) (Argentina)" [ref=e732]
+                - treeitem "(CUD) Urdampilleta Cruce (Buenos Aires) (Argentina)" [ref=e733]
+                - treeitem "(CVA) Vallimanca Cruce (Buenos Aires) (Argentina)" [ref=e734]
+                - treeitem "(CAB) Cabildo (Buenos Aires) (Argentina)" [ref=e735]
+                - treeitem "(CMP) Campana Terminal (Buenos Aires) (Argentina)" [ref=e736]
+                - treeitem "(QUEN) Quenuma (Buenos Aires) (Argentina)" [ref=e737]
+                - treeitem "(VIZA) Villa Maza (Buenos Aires) (Argentina)" [ref=e738]
+                - treeitem "(URI) Uribelarrea (Buenos Aires) (Argentina)" [ref=e739]
+                - treeitem "(VLM) Vallimanca (Buenos Aires) (Argentina)" [ref=e740]
+                - treeitem "(VLP) Vicente Lopez (Buenos Aires) (Argentina)" [ref=e741]
+                - treeitem "(TUR) Turdera (Buenos Aires) (Argentina)" [ref=e742]
+                - treeitem "(SLQ) Salliquelo (Buenos Aires) (Argentina)" [ref=e743]
+                - treeitem "(ACU) Curaru Acceso (Buenos Aires) (Argentina)" [ref=e744]
+                - treeitem "(DAX) Daireaux (Buenos Aires) (Argentina)" [ref=e745]
+                - treeitem "(DRY) Drysdale (Buenos Aires) (Argentina)" [ref=e746]
+                - treeitem "(MGL) El Mangrullo (Buenos Aires) (Argentina)" [ref=e747]
+                - treeitem "(RIV) Rivera (Buenos Aires) (Argentina)" [ref=e748]
+                - treeitem "(ROP) Roque Perez (Buenos Aires) (Argentina)" [ref=e749]
+                - treeitem "(ROZ) Roque Perez Cruce (Buenos Aires) (Argentina)" [ref=e750]
+                - treeitem "(PDR) Paso del Rey (Buenos Aires) (Argentina)" [ref=e751]
+                - treeitem "(PDN) Pedernales (Buenos Aires) (Argentina)" [ref=e752]
+                - treeitem "(PEH) Pehuajo (Buenos Aires) (Argentina)" [ref=e753]
+                - treeitem "(PRV) Pirovano (Buenos Aires) (Argentina)" [ref=e754]
+                - treeitem "(PDT) Piedritas (Buenos Aires) (Argentina)" [ref=e755]
+                - treeitem "(PLA) Pila (Buenos Aires) (Argentina)" [ref=e756]
+                - treeitem "(PIZ) Pilar (Buenos Aires) (Argentina)" [ref=e757]
+                - treeitem "(CSTE) Castelar (Buenos Aires) (Argentina)" [ref=e758]
+                - treeitem "(KM18) Kilometro 18 (Buenos Aires) (Argentina)" [ref=e759]
+                - treeitem "(LON) Loma Negra (Buenos Aires) (Argentina)" [ref=e760]
+                - treeitem "(ALG) Loma Negra Acceso (Buenos Aires) (Argentina)" [ref=e761]
+                - treeitem "(LFE) La Felicidad (Buenos Aires) (Argentina)" [ref=e762]
+                - treeitem "(MIM) Miramonte (Buenos Aires) (Argentina)" [ref=e763]
+                - treeitem "(VIA) Vialidad (Buenos Aires) (Argentina)" [ref=e764]
+                - treeitem "(LNO) La Noria Puente (Buenos Aires) (Argentina)" [ref=e765]
+                - treeitem "(LOS) Los Pinos Acceso (Buenos Aires) (Argentina)" [ref=e766]
+                - treeitem "(PER) Pereda M (Buenos Aires) (Argentina)" [ref=e767]
+                - treeitem "(LTA) Larreta M (Buenos Aires) (Argentina)" [ref=e768]
+                - treeitem "(K53) Km 375 Ruta 3 (Buenos Aires) (Argentina)" [ref=e769]
+                - treeitem "(K03) Km 390 Ruta 3 (Buenos Aires) (Argentina)" [ref=e770]
+                - treeitem "(HOS) Hosteria San Antonio (Buenos Aires) (Argentina)" [ref=e771]
+                - treeitem "(CAM) Caminero (Buenos Aires) (Argentina)" [ref=e772]
+                - treeitem "(RQU) Rio Quequen (Buenos Aires) (Argentina)" [ref=e773]
+                - treeitem "(ADL) Dolores Acceso (Buenos Aires) (Argentina)" [ref=e774]
+                - treeitem "(HUS) Husares (Buenos Aires) (Argentina)" [ref=e775]
+                - treeitem "(ISO) Inocencio Sosa (Buenos Aires) (Argentina)" [ref=e776]
+                - treeitem "(JAU) Jauregui (Buenos Aires) (Argentina)" [ref=e777]
+                - treeitem "(JEP) Jeppener (Buenos Aires) (Argentina)" [ref=e778]
+                - treeitem "(HUN) Huanguelen (Buenos Aires) (Argentina)" [ref=e779]
+          - button [ref=e42] [cursor=pointer]:
+            - img "Flecha" [ref=e43]
+          - generic [ref=e44]:
+            - generic [ref=e45]: Destino
+            - textbox [aria-hidden] [ref=e46]:
+              - /placeholder: Ingresá hacia dónde viajás
+            - list [ref=e564]:
+              - listitem [ref=e565]: Completá el Destino de tu viaje
+            - combobox "Ingresá hacia dónde viajás" [ref=e49] [cursor=pointer]
+          - generic [ref=e51] [cursor=pointer]:
+            - generic [ref=e52]:
+              - radio "Sólo ida" [checked] [ref=e53]
+              - text: Sólo ida
+            - generic [ref=e55]:
+              - radio "Ida y vuelta" [ref=e56]
+              - text: Ida y vuelta
+          - generic [ref=e58]:
+            - generic:
+              - generic [ref=e60]:
+                - generic [ref=e61]: Fechas
+                - textbox "Ida" [ref=e62]
+                - list [ref=e566]:
+                  - listitem [ref=e567]: Completá la fecha
+                - generic:
+                  - img "Ida"
+              - generic [ref=e64]:
+                - textbox "Vuelta" [disabled] [ref=e66]
+                - generic:
+                  - img "Vuelta"
+            - generic [ref=e68]:
+              - generic [ref=e69]: Pasajeros
+              - combobox [ref=e70]:
+                - option "1" [selected]
+                - option "2"
+                - option "3"
+                - option "4"
+                - option "5"
+                - option "6"
+          - button "Buscar" [ref=e71] [cursor=pointer]
+      - generic [ref=e72]:
+        - img "Tarjetas de crédito" [ref=e73]
+        - link "¡Descuentos y cuotas sin interés!" [ref=e74] [cursor=pointer]:
+          - /url: ../promociones/
+    - generic [ref=e76]:
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic:
+            - link "Pagá en cuotas sin interés desde la app de Centraldepasajes.com, con todas las tarjetas.":
+              - /url: https://www.centraldepasajes.com.ar/promociones/redirect-app-store.html
+              - generic:
+                - img "Pagá en cuotas sin interés desde la app de Centraldepasajes.com, con todas las tarjetas."
+        - generic [ref=e80]:
+          - generic:
+            - link "En la web de Centraldepasajes.com podés pagar en 6 cuotas sin interés.":
+              - /url: https://www.centraldepasajes.com.ar/promociones/
+              - generic:
+                - img "En la web de Centraldepasajes.com podés pagar en 6 cuotas sin interés."
+        - link [ref=e83] [cursor=pointer]:
+          - /url: https://soyestudiante.com.ar/
+          - img "¡Hay nuevos destinos a la costa!" [ref=e85]
+        - link [ref=e88] [cursor=pointer]:
+          - /url: https://www.centraldepasajes.com.ar
+          - img "Finde Largo del 10 al 12 de octubre" [ref=e90]
+        - link [ref=e93] [cursor=pointer]:
+          - /url: https://www.centraldepasajes.com.ar/promociones/pasajes-micro-mercado-pago.html
+          - img "En la app aprovechá 6 cuotas sin interés CON TODAS LAS TARJETAS" [ref=e95]
+        - generic [ref=e96]:
+          - generic:
+            - link "Pagá en cuotas sin interés desde la app de Centraldepasajes.com, con todas las tarjetas.":
+              - /url: https://www.centraldepasajes.com.ar/promociones/redirect-app-store.html
+              - generic:
+                - img "Pagá en cuotas sin interés desde la app de Centraldepasajes.com, con todas las tarjetas."
+        - generic [ref=e97]:
+          - generic:
+            - link "En la web de Centraldepasajes.com podés pagar en 6 cuotas sin interés.":
+              - /url: https://www.centraldepasajes.com.ar/promociones/
+              - generic:
+                - img "En la web de Centraldepasajes.com podés pagar en 6 cuotas sin interés."
+        - link [ref=e100] [cursor=pointer]:
+          - /url: https://soyestudiante.com.ar/
+          - img "¡Hay nuevos destinos a la costa!" [ref=e102]
+        - link [ref=e105] [cursor=pointer]:
+          - /url: https://www.centraldepasajes.com.ar
+          - img "Finde Largo del 10 al 12 de octubre" [ref=e107]
+        - link [ref=e110] [cursor=pointer]:
+          - /url: https://www.centraldepasajes.com.ar/promociones/pasajes-micro-mercado-pago.html
+          - img "En la app aprovechá 6 cuotas sin interés CON TODAS LAS TARJETAS" [ref=e112]
+        - generic [ref=e113]:
+          - generic:
+            - link "Pagá en cuotas sin interés desde la app de Centraldepasajes.com, con todas las tarjetas.":
+              - /url: https://www.centraldepasajes.com.ar/promociones/redirect-app-store.html
+              - generic:
+                - img "Pagá en cuotas sin interés desde la app de Centraldepasajes.com, con todas las tarjetas."
+      - generic [ref=e114]:
+        - button [ref=e115] [cursor=pointer]
+        - button [ref=e117] [cursor=pointer]
+        - button [ref=e119] [cursor=pointer]
+        - button [ref=e121] [cursor=pointer]
+        - button [ref=e123] [cursor=pointer]
+  - generic [ref=e126]:
+    - heading "Pasajes de micro baratos" [level=2] [ref=e127]
+    - generic [ref=e129]:
+      - generic [ref=e131]:
+        - link "Santa Fe Desde Buenos Aires Santa Fe ¡Pasajes baratos a Santa Fe!" [ref=e134] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/santa-fe/?DIda=1&CntPas=1
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - heading "Santa Fe" [level=3] [ref=e137]
+              - heading "Desde Buenos Aires" [level=4] [ref=e138]
+            - img "Santa Fe" [ref=e140]
+          - generic [ref=e141]: ¡Pasajes baratos a Santa Fe!
+        - link "Buenos Aires Desde Rosario Buenos Aires ¡Pasajes baratos a Buenos Aires!" [ref=e144] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/rosario/retiro-buenos-aires/?DIda=1&CntPas=1
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - heading "Buenos Aires" [level=3] [ref=e147]
+              - heading "Desde Rosario" [level=4] [ref=e148]
+            - img "Buenos Aires" [ref=e150]
+          - generic [ref=e151]: ¡Pasajes baratos a Buenos Aires!
+        - link "Paraná Desde Buenos Aires Paraná ¡Pasajes baratos a Paraná!" [ref=e154] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/parana/?DIda=1&CntPas=1
+          - generic [ref=e155]:
+            - generic [ref=e156]:
+              - heading "Paraná" [level=3] [ref=e157]
+              - heading "Desde Buenos Aires" [level=4] [ref=e158]
+            - generic:
+              - img "Paraná"
+          - generic [ref=e159]: ¡Pasajes baratos a Paraná!
+        - link "Mendoza Desde Buenos Aires Mendoza ¡Pasajes baratos a Mendoza!" [ref=e162] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/mendoza/?DIda=2&CntPas=1
+          - generic [ref=e163]:
+            - generic [ref=e164]:
+              - heading "Mendoza" [level=3] [ref=e165]
+              - heading "Desde Buenos Aires" [level=4] [ref=e166]
+            - img "Mendoza" [ref=e168]
+          - generic [ref=e169]: ¡Pasajes baratos a Mendoza!
+        - link "Mar del Plata Desde Buenos Aires Mar del Plata ¡Pasajes baratos a Mar del Plata!" [ref=e172] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/mar-del-plata/?DIda=1&CntPas=1
+          - generic [ref=e173]:
+            - generic [ref=e174]:
+              - heading "Mar del Plata" [level=3] [ref=e175]
+              - heading "Desde Buenos Aires" [level=4] [ref=e176]
+            - img "Mar del Plata" [ref=e178]
+          - generic [ref=e179]: ¡Pasajes baratos a Mar del Plata!
+        - link "Rosario Desde Buenos Aires Rosario ¡Pasajes baratos a Rosario!" [ref=e182] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/rosario/?DIda=1&CntPas=1
+          - generic [ref=e183]:
+            - generic [ref=e184]:
+              - heading "Rosario" [level=3] [ref=e185]
+              - heading "Desde Buenos Aires" [level=4] [ref=e186]
+            - img "Rosario" [ref=e188]
+          - generic [ref=e189]: ¡Pasajes baratos a Rosario!
+        - link "Córdoba Desde Buenos Aires Córdoba ¡Pasajes baratos a Córdoba!" [ref=e192] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/cordoba/?DIda=1&CntPas=1
+          - generic [ref=e193]:
+            - generic [ref=e194]:
+              - heading "Córdoba" [level=3] [ref=e195]
+              - heading "Desde Buenos Aires" [level=4] [ref=e196]
+            - img "Córdoba" [ref=e198]
+          - generic [ref=e199]: ¡Pasajes baratos a Córdoba!
+        - link "Santa Fe Desde Buenos Aires Santa Fe ¡Pasajes baratos a Santa Fe!" [ref=e202] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/santa-fe/?DIda=1&CntPas=1
+          - generic [ref=e203]:
+            - generic [ref=e204]:
+              - heading "Santa Fe" [level=3] [ref=e205]
+              - heading "Desde Buenos Aires" [level=4] [ref=e206]
+            - img "Santa Fe" [ref=e208]
+          - generic [ref=e209]: ¡Pasajes baratos a Santa Fe!
+        - link "Buenos Aires Desde Rosario Buenos Aires ¡Pasajes baratos a Buenos Aires!" [ref=e212] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/rosario/retiro-buenos-aires/?DIda=1&CntPas=1
+          - generic [ref=e213]:
+            - generic [ref=e214]:
+              - heading "Buenos Aires" [level=3] [ref=e215]
+              - heading "Desde Rosario" [level=4] [ref=e216]
+            - img "Buenos Aires" [ref=e218]
+          - generic [ref=e219]: ¡Pasajes baratos a Buenos Aires!
+        - link "Paraná Desde Buenos Aires Paraná ¡Pasajes baratos a Paraná!" [ref=e222] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/parana/?DIda=1&CntPas=1
+          - generic [ref=e223]:
+            - generic [ref=e224]:
+              - heading "Paraná" [level=3] [ref=e225]
+              - heading "Desde Buenos Aires" [level=4] [ref=e226]
+            - generic:
+              - img "Paraná"
+          - generic [ref=e227]: ¡Pasajes baratos a Paraná!
+        - link "Mendoza Desde Buenos Aires Mendoza ¡Pasajes baratos a Mendoza!" [ref=e230] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/mendoza/?DIda=2&CntPas=1
+          - generic [ref=e231]:
+            - generic [ref=e232]:
+              - heading "Mendoza" [level=3] [ref=e233]
+              - heading "Desde Buenos Aires" [level=4] [ref=e234]
+            - img "Mendoza" [ref=e236]
+          - generic [ref=e237]: ¡Pasajes baratos a Mendoza!
+        - link "Mar del Plata Desde Buenos Aires Mar del Plata ¡Pasajes baratos a Mar del Plata!" [ref=e240] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/mar-del-plata/?DIda=1&CntPas=1
+          - generic [ref=e241]:
+            - generic [ref=e242]:
+              - heading "Mar del Plata" [level=3] [ref=e243]
+              - heading "Desde Buenos Aires" [level=4] [ref=e244]
+            - img "Mar del Plata" [ref=e246]
+          - generic [ref=e247]: ¡Pasajes baratos a Mar del Plata!
+        - link "Rosario Desde Buenos Aires Rosario ¡Pasajes baratos a Rosario!" [ref=e250] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/rosario/?DIda=1&CntPas=1
+          - generic [ref=e251]:
+            - generic [ref=e252]:
+              - heading "Rosario" [level=3] [ref=e253]
+              - heading "Desde Buenos Aires" [level=4] [ref=e254]
+            - img "Rosario" [ref=e256]
+          - generic [ref=e257]: ¡Pasajes baratos a Rosario!
+        - link "Córdoba Desde Buenos Aires Córdoba ¡Pasajes baratos a Córdoba!" [ref=e260] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/cordoba/?DIda=1&CntPas=1
+          - generic [ref=e261]:
+            - generic [ref=e262]:
+              - heading "Córdoba" [level=3] [ref=e263]
+              - heading "Desde Buenos Aires" [level=4] [ref=e264]
+            - img "Córdoba" [ref=e266]
+          - generic [ref=e267]: ¡Pasajes baratos a Córdoba!
+        - link "Santa Fe Desde Buenos Aires Santa Fe ¡Pasajes baratos a Santa Fe!" [ref=e270] [cursor=pointer]:
+          - /url: /cdp/pasajes-micro/retiro-buenos-aires/santa-fe/?DIda=1&CntPas=1
+          - generic [ref=e271]:
+            - generic [ref=e272]:
+              - heading "Santa Fe" [level=3] [ref=e273]
+              - heading "Desde Buenos Aires" [level=4] [ref=e274]
+            - img "Santa Fe" [ref=e276]
+          - generic [ref=e277]: ¡Pasajes baratos a Santa Fe!
+      - generic:
+        - button [ref=e278] [cursor=pointer]:
+          - img "Anterior" [ref=e279]
+        - button [ref=e280] [cursor=pointer]:
+          - img "Siguiente" [ref=e281]
+  - generic [ref=e284]:
+    - generic [ref=e286]:
+      - generic [ref=e287]:
+        - generic:
+          - link "Tony Tur":
+            - /url: ../empresas-de-micro/tony-tur.html
+            - img "Tony Tur"
+      - generic [ref=e288]:
+        - generic:
+          - link "Balut":
+            - /url: ../empresas-de-micro/balut.html
+            - img "Balut"
+      - generic [ref=e289]:
+        - generic:
+          - link "Plusmar":
+            - /url: ../empresas-de-micro/plusmar.html
+            - img "Plusmar"
+      - generic [ref=e290]:
+        - generic:
+          - link "Rápido Tata":
+            - /url: ../empresas-de-micro/rapido-tata.html
+            - img "Rápido Tata"
+      - generic [ref=e291]:
+        - generic:
+          - link "San Juan":
+            - /url: ../empresas-de-micro/autotransportes-san-juan.html
+            - img "San Juan"
+      - generic [ref=e292]:
+        - generic:
+          - link "Platabus":
+            - /url: ../empresas-de-micro/platabus.html
+            - img "Platabus"
+      - generic [ref=e293]:
+        - generic:
+          - link "Zenit":
+            - /url: ../empresas-de-micro/zenit.html
+            - img "Zenit"
+      - generic [ref=e294]:
+        - generic:
+          - link "Sierras de córdoba":
+            - /url: ../empresas-de-micro/sierras-de-cordoba.html
+            - img "Sierras de córdoba"
+      - generic [ref=e295]:
+        - generic:
+          - link "Crucero del Sur":
+            - /url: ../empresas-de-micro/crucero-del-sur.html
+            - img "Crucero del Sur"
+      - generic [ref=e296]:
+        - generic:
+          - link "Rutatlántica":
+            - /url: ../empresas-de-micro/rutatlantica.html
+            - img "Rutatlántica"
+      - link [ref=e299] [cursor=pointer]:
+        - /url: ../empresas-de-micro/dumascat.html
+        - img "Dumascat" [ref=e300]
+      - link [ref=e303] [cursor=pointer]:
+        - /url: ../empresas-de-micro/flecha-bus.html
+        - img "FlechaBUS" [ref=e304]
+      - link [ref=e307] [cursor=pointer]:
+        - /url: ../empresas-de-micro/chevallier.html
+        - img "Chevallier" [ref=e308]
+      - link [ref=e311] [cursor=pointer]:
+        - /url: ../empresas-de-micro/urquiza.html
+        - img "Urquiza" [ref=e312]
+      - link [ref=e315] [cursor=pointer]:
+        - /url: ../empresas-de-micro/empresa-argentina.html
+        - img "Empresa Argentina" [ref=e316]
+      - link [ref=e319] [cursor=pointer]:
+        - /url: ../empresas-de-micro/la-veloz-del-norte.html
+        - img "La Veloz del Norte" [ref=e320]
+      - link [ref=e323] [cursor=pointer]:
+        - /url: ../empresas-de-micro/andesmar.html
+        - img "Andesmar" [ref=e324]
+      - link [ref=e571] [cursor=pointer]:
+        - /url: ../empresas-de-micro/crucero-del-norte.html
+        - img "Crucero del Norte" [ref=e572]
+      - generic [ref=e326]:
+        - generic:
+          - link "Cata":
+            - /url: ../empresas-de-micro/cata-internacional.html
+            - img "Cata"
+      - generic [ref=e327]:
+        - generic:
+          - link "Fono Bus":
+            - /url: ../empresas-de-micro/fono-bus.html
+            - img "Fono Bus"
+      - generic [ref=e328]:
+        - generic:
+          - link "El Practico":
+            - /url: ../empresas-de-micro/el-practico.html
+            - img "El Practico"
+      - generic [ref=e329]:
+        - generic:
+          - link "Nuevo Expreso":
+            - /url: ../empresas-de-micro/nuevo-expreso.html
+            - img "Nuevo Expreso"
+      - generic [ref=e330]:
+        - generic:
+          - link "Tony Tur":
+            - /url: ../empresas-de-micro/tony-tur.html
+            - img "Tony Tur"
+      - generic [ref=e331]:
+        - generic:
+          - link "Balut":
+            - /url: ../empresas-de-micro/balut.html
+            - img "Balut"
+      - generic [ref=e332]:
+        - generic:
+          - link "Plusmar":
+            - /url: ../empresas-de-micro/plusmar.html
+            - img "Plusmar"
+      - generic [ref=e333]:
+        - generic:
+          - link "Rápido Tata":
+            - /url: ../empresas-de-micro/rapido-tata.html
+            - img "Rápido Tata"
+      - generic [ref=e334]:
+        - generic:
+          - link "San Juan":
+            - /url: ../empresas-de-micro/autotransportes-san-juan.html
+            - img "San Juan"
+      - generic [ref=e335]:
+        - generic:
+          - link "Platabus":
+            - /url: ../empresas-de-micro/platabus.html
+            - img "Platabus"
+      - generic [ref=e336]:
+        - generic:
+          - link "Zenit":
+            - /url: ../empresas-de-micro/zenit.html
+            - img "Zenit"
+      - generic [ref=e337]:
+        - generic:
+          - link "Sierras de córdoba":
+            - /url: ../empresas-de-micro/sierras-de-cordoba.html
+            - img "Sierras de córdoba"
+      - generic [ref=e338]:
+        - generic:
+          - link "Crucero del Sur":
+            - /url: ../empresas-de-micro/crucero-del-sur.html
+            - img "Crucero del Sur"
+      - generic [ref=e339]:
+        - generic:
+          - link "Rutatlántica":
+            - /url: ../empresas-de-micro/rutatlantica.html
+            - img "Rutatlántica"
+      - link [ref=e342] [cursor=pointer]:
+        - /url: ../empresas-de-micro/dumascat.html
+        - img "Dumascat" [ref=e343]
+      - link [ref=e346] [cursor=pointer]:
+        - /url: ../empresas-de-micro/flecha-bus.html
+        - img "FlechaBUS" [ref=e347]
+      - link [ref=e350] [cursor=pointer]:
+        - /url: ../empresas-de-micro/chevallier.html
+        - img "Chevallier" [ref=e351]
+      - link [ref=e354] [cursor=pointer]:
+        - /url: ../empresas-de-micro/urquiza.html
+        - img "Urquiza" [ref=e355]
+      - link [ref=e358] [cursor=pointer]:
+        - /url: ../empresas-de-micro/empresa-argentina.html
+        - img "Empresa Argentina" [ref=e359]
+      - link [ref=e362] [cursor=pointer]:
+        - /url: ../empresas-de-micro/la-veloz-del-norte.html
+        - img "La Veloz del Norte" [ref=e363]
+      - link [ref=e366] [cursor=pointer]:
+        - /url: ../empresas-de-micro/andesmar.html
+        - img "Andesmar" [ref=e367]
+      - link [ref=e574] [cursor=pointer]:
+        - /url: ../empresas-de-micro/crucero-del-norte.html
+        - img "Crucero del Norte" [ref=e575]
+      - generic [ref=e369]:
+        - generic:
+          - link "Cata":
+            - /url: ../empresas-de-micro/cata-internacional.html
+            - img "Cata"
+      - generic [ref=e370]:
+        - generic:
+          - link "Fono Bus":
+            - /url: ../empresas-de-micro/fono-bus.html
+            - img "Fono Bus"
+      - generic [ref=e371]:
+        - generic:
+          - link "El Practico":
+            - /url: ../empresas-de-micro/el-practico.html
+            - img "El Practico"
+      - generic [ref=e372]:
+        - generic:
+          - link "Nuevo Expreso":
+            - /url: ../empresas-de-micro/nuevo-expreso.html
+            - img "Nuevo Expreso"
+    - generic:
+      - button [ref=e373] [cursor=pointer]:
+        - img "Anterior" [ref=e374]
+      - button [ref=e375] [cursor=pointer]:
+        - img "Siguiente" [ref=e376]
+  - generic [ref=e378]:
+    - generic [ref=e380]:
+      - img "Central de Pasajes" [ref=e381]
+      - heading "¡Descargá nuestra APP y viajá en bus con descuentos!" [level=5] [ref=e382]
+      - generic [ref=e383]:
+        - link [ref=e384] [cursor=pointer]:
+          - /url: https://apps.apple.com/ar/app/central-de-pasajes/id1163617548?l=es
+          - img "Consiguelo en el App Store" [ref=e385]
+        - link [ref=e386] [cursor=pointer]:
+          - /url: https://play.google.com/store/apps/details?id=com.centraldepasajes
+          - img "Disponible en Google Play" [ref=e387]
+    - generic [ref=e389]:
+      - heading "¡Recibí ofertas de pasajes low cost en tu e-mail!" [level=5] [ref=e397]
+      - generic [ref=e399]:
+        - generic [ref=e400]:
+          - generic [ref=e401]: E-mail
+          - textbox "E-mail" [ref=e402]:
+            - /placeholder: Ingresá tu dirección de e-mail
+        - button "Enviar" [ref=e403] [cursor=pointer]
+    - generic [ref=e405]:
+      - heading [level=2] [ref=e406]:
+        - link "Información importante para viajar en micro" [ref=e407] [cursor=pointer]:
+          - /url: /ayuda
+      - generic [ref=e409]:
+        - generic [ref=e410]:
+          - heading [level=3] [ref=e411]:
+            - link "¿Cómo comprar pasajes en micro online?" [ref=e412] [cursor=pointer]:
+              - /url: /ayuda/como-comprar-en-central-de-pasajes/como-comprar-pasajes-micro-online
+          - paragraph [ref=e413]: Centraldepasajes.com es la plataforma de pasajes en micro líder, donde podés comprar online de forma rápida, fácil y segura. Solo ingresá el origen, destino, fecha de viaje, cantidad de pasajeros y presioná "Buscar". Compará entre empresas, horarios y precios, seleccionando lo que más te convenga. Elegí tu asiento, completá los datos de los pasajeros y el medio de pago. Finalizá la compra y recibí tu eticket por email, listo para subir al bus. ¡Viajar nunca fue tan sencillo!
+        - generic [ref=e414]:
+          - heading [level=3] [ref=e415]:
+            - link "¿Cómo devolver pasajes en micro?" [ref=e416] [cursor=pointer]:
+              - /url: /ayuda/devolucion-de-pasajes
+          - paragraph [ref=e417]: Devolver tus pasajes en Centraldepasajes.com es muy simple. Ingresá a "Devolver mi pasaje", completá la información y presioná "Buscar". Verificá que la información del pasaje sea correcta, hacé clic en "Devolver" y ¡listo! Si usaste la APP, ingresá a "Mis viajes", seleccioná el pasaje y presioná "Devolver". También podés solicitar la devolución por email; deberás hacerlo con anticipación para cumplir con los plazos del viaje. ¡Así de rápido y fácil!
+        - generic [ref=e418]:
+          - heading [level=3] [ref=e419]:
+            - link "¿Cómo comprar pasajes de micro en Hot Sale, Cyber Monday o Black Friday?" [ref=e420] [cursor=pointer]:
+              - /url: /promociones/descuentos-black.html
+          - paragraph [ref=e421]:
+            - text: Durante
+            - link "Hotsale" [ref=e422] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/hotsale
+            - text: ","
+            - link "Cybermonday" [ref=e423] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/cybermonday
+            - text: o
+            - link "Black Friday" [ref=e424] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/promociones/descuentos-black.html
+            - text: vas a encontrar pasajes en micro baratos a
+            - link "destinos de Argentina" [ref=e425] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasajes-a-destinos-de-argentina.html
+            - text: ", con descuentos exclusivos desde nuestra web o App. También podrás aprovechar promociones durante"
+            - link "Hot Week" [ref=e426] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/promociones/hotweek-pasajes.html
+            - text: ","
+            - link "Cyber Week" [ref=e427] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/promociones/cyberweek-pasajes.html
+            - text: o
+            - link "Travel Sale" [ref=e428] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/travelsale
+            - text: . En Centraldepasajes.com, la plataforma de pasajes online líder, viajás en bus al mejor precio. ¡Conocé más sobre
+            - link "Black Friday" [ref=e429] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/promociones/descuentos-black.html
+            - text: ","
+            - link "Hot Sale" [ref=e430] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/promociones/hotsale-pasajes.html
+            - text: ","
+            - link "Travel Sale" [ref=e431] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/promociones/travel-sale-pasajes.html
+            - text: "y"
+            - link "Cyber Monday" [ref=e432] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/promociones/cybermonday-pasajes.html
+            - text: "!"
+        - generic [ref=e433]:
+          - heading [level=3] [ref=e434]:
+            - link "¿Cuándo es el próximo feriado?" [ref=e435] [cursor=pointer]:
+              - /url: /pasaje-micro/feriados.html
+          - paragraph [ref=e436]:
+            - text: Conocé el
+            - link [ref=e437] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/pasaje-micro/feriados.html
+              - strong [ref=e439]: calendario de feriados 2026
+            - text: y empezá a planear tu próxima escapada en micro. Los fines de semana largos son la excusa perfecta para descansar o descubrir nuevos destinos. Entre los más esperados están los
+            - link "Carnavales" [ref=e440] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasaje-feriado-carnaval.html
+            - text: "y"
+            - link "Semana Santa" [ref=e441] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasaje-semana-santa.html
+            - text: ", ideales para desconectarse de la rutina. También llegan las"
+            - link "Vacaciones de Invierno" [ref=e442] [cursor=pointer]:
+              - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasajes-vacaciones-de-invierno.html
+            - text: ", una oportunidad perfecta para viajar en familia o con amigos. Cada feriado es una chance para viajar en micro y vivir una nueva aventura."
+    - generic [ref=e443]:
+      - heading "¡Encontrá pasajes en micro baratos!" [level=2] [ref=e444]
+      - paragraph [ref=e445]:
+        - text: Central de Pasajes es la plataforma de venta de pasajes de micro online líder en Argentina. Comprá tu pasaje de micro low cost de forma simple, rápida y segura. Aprovechá las ofertas comprando online con anticipación tu pasaje a Mar del Plata, Rosario, Córdoba, Retiro, Buenos Aires, Gualeguaychú, Pinamar, Villa Gesell, La costa, San Bernardo, Paraná, Santa Fé, Bahía Blanca, Tucumán, Salta y todos los
+        - link "destinos de Argentina" [ref=e446] [cursor=pointer]:
+          - /url: /pasaje-micro/pasajes-a-destinos-de-argentina.html
+        - text: . +541154205519. No pierdas tiempo yendo a la terminal de ómnibus, compará online y encontrá
+        - link "pasajes baratos" [ref=e447] [cursor=pointer]:
+          - /url: /pasaje-micro/pasajes-mas-buscados.html
+        - text: "de todas las empresas de colectivo: Flecha Bus, Chevallier, Urquiza, Plusmar, Andesmar, La Veloz del Norte, Rápido Tata, Pullman y muchas más. ¡Viajá en bus al mejor precio con Central de Pasajes!"
+    - generic [ref=e448]:
+      - paragraph [ref=e449]:
+        - link [ref=e450] [cursor=pointer]:
+          - /url: https://www.instagram.com/centraldepasajes.ar/
+          - img "Instagram" [ref=e451]
+      - paragraph [ref=e452]:
+        - link [ref=e453] [cursor=pointer]:
+          - /url: https://www.facebook.com/centraldepasajes.ar/
+          - img "Facebook" [ref=e454]
+  - generic [ref=e457]:
+    - generic [ref=e458]:
+      - link [ref=e459] [cursor=pointer]:
+        - /url: /cdp/empresas.htm
+        - heading "Empresas de micro" [level=3] [ref=e460]
+      - list [ref=e461]:
+        - listitem [ref=e462]:
+          - link "Flecha Bus" [ref=e463] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/flecha-bus.html
+        - listitem [ref=e464]:
+          - link "Plusmar" [ref=e465] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/plusmar.html
+        - listitem [ref=e466]:
+          - link "Andesmar" [ref=e467] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/andesmar.html
+        - listitem [ref=e468]:
+          - link "Chevallier" [ref=e469] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/chevallier.html
+        - listitem [ref=e470]:
+          - link "La Veloz del Norte" [ref=e471] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/la-veloz-del-norte.html
+    - generic [ref=e472]:
+      - heading "Empresas de bus" [level=3] [ref=e473]
+      - list [ref=e474]:
+        - listitem [ref=e475]:
+          - link "Crucero del Norte" [ref=e476] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/crucero-del-norte.html
+        - listitem [ref=e477]:
+          - link "Cata Internacional" [ref=e478] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/cata-internacional.html
+        - listitem [ref=e479]:
+          - link "Rutatlántica" [ref=e480] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/rutatlantica.html
+        - listitem [ref=e481]:
+          - link "El Norte" [ref=e482] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/el-norte.html
+        - listitem [ref=e483]:
+          - link "Coata Córdoba" [ref=e484] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/empresas-de-micro/cordoba-coata.html
+    - generic [ref=e485]:
+      - link [ref=e486] [cursor=pointer]:
+        - /url: https://www.centraldepasajes.com.ar/pasaje-micro/terminales-de-micro.html
+        - heading "Terminales de ómnibus" [level=3] [ref=e487]
+      - list [ref=e488]:
+        - listitem [ref=e489]:
+          - link "Terminal de Retiro" [ref=e490] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/terminal-de-retiro.html
+        - listitem [ref=e491]:
+          - link "Terminal de Rosario" [ref=e492] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/terminal-rosario.html
+        - listitem [ref=e493]:
+          - link "Terminal de Córdoba" [ref=e494] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/terminal-de-cordoba.html
+        - listitem [ref=e495]:
+          - link "Terminal de Mendoza" [ref=e496] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/terminal-de-mendoza.html
+        - listitem [ref=e497]:
+          - link "Terminal de Mar del Plata" [ref=e498] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/terminal-mar-del-plata.html
+    - generic [ref=e499]:
+      - heading "Pasajes de micro baratos" [level=3] [ref=e500]
+      - list [ref=e501]:
+        - listitem [ref=e502]:
+          - link "Pasajes a Mar del Plata" [ref=e503] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasaje-a-mar-del-plata.html
+        - listitem [ref=e504]:
+          - link "Pasajes a Buenos Aires" [ref=e505] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasaje-a-buenos-aires.html
+        - listitem [ref=e506]:
+          - link "Pasajes a Córdoba" [ref=e507] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasaje-a-cordoba.html
+        - listitem [ref=e508]:
+          - link "Pasajes a Brasil" [ref=e509] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasajes-a-brasil.html
+        - listitem [ref=e510]:
+          - link "Pasajes a la Costa" [ref=e511] [cursor=pointer]:
+            - /url: https://www.centraldepasajes.com.ar/pasaje-micro/pasaje-en-micro-a-la-costa.html
+  - contentinfo [ref=e512]:
+    - generic [ref=e513]:
+      - generic [ref=e514]:
+        - list [ref=e516]:
+          - listitem [ref=e517]:
+            - link "Promociones" [ref=e518] [cursor=pointer]:
+              - /url: ../promociones/
+          - listitem [ref=e519]:
+            - link "Cómo comprar" [ref=e520] [cursor=pointer]:
+              - /url: ../ayuda/como-comprar-en-central-de-pasajes
+          - listitem [ref=e521]:
+            - link "Viajes a medida" [ref=e522] [cursor=pointer]:
+              - /url: ../corporate/traslados-empresas.html
+          - listitem [ref=e523]:
+            - link "Empresas" [ref=e524] [cursor=pointer]:
+              - /url: /cdp/empresas.htm
+          - listitem [ref=e525]:
+            - link "Ayuda" [ref=e526] [cursor=pointer]:
+              - /url: ../ayuda
+          - listitem [ref=e527]:
+            - link "Contacto" [ref=e528] [cursor=pointer]:
+              - /url: contacto.htm
+        - list [ref=e530]:
+          - listitem [ref=e531]:
+            - link "Quiénes somos" [ref=e532] [cursor=pointer]:
+              - /url: quienes-somos.htm
+          - listitem [ref=e533]:
+            - link "Condiciones Generales" [ref=e534] [cursor=pointer]:
+              - /url: condiciones-generales.aspx
+          - listitem [ref=e535]:
+            - link "Políticas de Privacidad" [ref=e536] [cursor=pointer]:
+              - /url: politicas-de-privacidad.htm
+          - listitem [ref=e537]:
+            - link "Bases y Condiciones Promociones" [ref=e538] [cursor=pointer]:
+              - /url: bases-y-condiciones-promociones.aspx
+          - listitem [ref=e539]:
+            - link "Botón de arrepentimiento" [ref=e540] [cursor=pointer]:
+              - /url: /cdp/devolver-pasajes.aspx
+        - generic [ref=e541]:
+          - generic [ref=e542]:
+            - link [ref=e543] [cursor=pointer]:
+              - /url: https://www.mercadopago.com.ar/
+              - img "MercadoPago" [ref=e544]
+            - link [ref=e545] [cursor=pointer]:
+              - /url: https://www.argentina.gob.ar/aaip/datospersonales
+              - img "PDP" [ref=e546]
+            - link [ref=e547] [cursor=pointer]:
+              - /url: https://cace.org.ar/
+              - img "CACE" [ref=e548]
+            - link [ref=e549] [cursor=pointer]:
+              - /url: https://www.argentina.gob.ar/produccion/defensadelconsumidor
+              - img "Defensa del Consumidor" [ref=e550]
+            - link [ref=e551] [cursor=pointer]:
+              - /url: https://www.aviabue.org.ar/socios.php
+              - img "AVIABUE" [ref=e552]
+          - generic [ref=e553]:
+            - link [ref=e554] [cursor=pointer]:
+              - /url: javascript:Seal_Certificado('www.centraldepasajes.com.ar', 'es', 'CGHM-3.0', 'imagen');
+              - img "CertiSur - Sitio Seguro" [ref=e555]
+            - link [ref=e556] [cursor=pointer]:
+              - /url: javascript:Seal_Certificado('www.centraldepasajes.com.ar', 'es', 'CGHM-3.0', 'imagen');
+              - img "GeoTrust Secured" [ref=e557]
+            - link [ref=e558] [cursor=pointer]:
+              - /url: https://servicios1.afip.gov.ar/clavefiscal/qr/mobilePublicInfo.aspx?req=e1ttZXRob2Q9Z2V0UHVibGljSW5mb11bcGVyc29uYT0zMDcwODE1Mjk3NF1bdGlwb2RvbWljaWxpbz0wXVtzZWN1ZW5jaWE9MF1bdXJsPWh0dHA6Ly93d3cuY2VudHJhbGRlcGFzYWplcy5jb20uYXJdfQ==
+              - img "Data Fiscal" [ref=e559]
+      - paragraph [ref=e561]: AIV Central de Pasajes EVT · Legajo 12457
+  - textbox "Ingresá desde dónde viajás" [active] [ref=e578]: Buenos Aires

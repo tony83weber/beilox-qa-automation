@@ -167,6 +167,7 @@ tests/
   ui/search.spec.ts
   api/{people,planets,films}.spec.ts
 api-responses/    # bodies happy path
+docs/             # teóricas, locators, bug report, evidencia MCP, flujo git
 .github/workflows/monday-tests.yml
 ```
 
@@ -175,7 +176,7 @@ api-responses/    # bodies happy path
 1. **Un solo repo Playwright** con projects: `ui-chromium`, `ui-firefox`, `ui-webkit`, `ui-mobile-chromium` (Pixel 5), `api`.
 2. **POM estricto:** si cambia el botón Buscar, se toca **un archivo** (`src/pages/home.page.ts`).
 3. **Fixtures** (`test.extend`): los specs no instancian page objects a mano.
-4. **Sin `waitForTimeout` fijos** en tests/POM de producción; esperas vía auto-waiting / `toBeVisible` / `waitForURL` implícito en assertions.
+4. **Esperas solo con aserciones auto-esperantes** (`expect(...).toBeVisible()`, `toHaveURL`, `not.toHaveValue('')`). Sin `waitForTimeout`, sin `waitFor({ state })`, sin `waitForFunction`. Todo el código es TypeScript (no hay `.js`/`.mjs`).
 5. **Credenciales / config** vía `.env` (nunca committeado). El challenge usa URLs públicas; `.env.example` documenta el contrato.
 6. **Tipado estricto** (`strict`, `noImplicitAny`); TypeScript 5.8.
 7. **Allure UI legible:** `allure-playwright` con `detail: false` para ocultar steps técnicos; solo `test.step` de negocio + screenshots en aserciones.
@@ -187,10 +188,10 @@ api-responses/    # bodies happy path
 |-----------|----------|
 | Búsqueda válida | Retiro (BA) → Mar del Plata, fecha futura → lista `#servicios` y textos coherentes |
 | Sin resultados | Ushuaia → La Quiaca → mensaje “No encontramos opciones…” |
-| Datos inválidos | Submit vacío → permanece en home + campos `:invalid` |
+| Datos inválidos | Submit vacío → permanece en home + mensajes “Completá el Origen / Destino / la fecha” |
 | Volver atrás | Resultados → `goBack` → buscador usable |
 
-**Trade-off:** el sitio es productivo y externo (Select2, datepicker jQuery, ads). Priorizamos locators estables (`#btnCons`, containers Select2) y `click({ noWaitAfter: true })` en el submit porque Firefox puede colgarse esperando navigations programadas del sitio. Detalle: [`docs/locators.md`](docs/locators.md).
+**Locators:** relevados con Playwright MCP. Rol + nombre donde el sitio los expone (`getByRole('button', { name: 'Buscar' })`, `textbox "Ida"`, opciones `treeitem`); `aria-labelledby` en los combobox Select2 porque su nombre accesible es el valor elegido. El submit usa `click({ noWaitAfter: true })` porque Firefox puede colgarse esperando navigations programadas del sitio. Detalle: [`docs/locators.md`](docs/locators.md).
 
 ---
 
@@ -217,8 +218,8 @@ api-responses/    # bodies happy path
 
 Central de Pasajes es **prod público**: ads, promos, Select2, datepicker. Mitigaciones:
 
-- Locators encapsulados; sin `waitForTimeout` fijos.
-- Cierre Select2 por value + API (ver [`docs/bug-report-select2-allure.md`](docs/bug-report-select2-allure.md)).
+- Locators encapsulados en el POM; solo aserciones auto-esperantes.
+- Select2: se valida el valor del input oculto en vez de esperar que el dropdown se cierre (a veces conserva `--open`).
 - Retries solo en CI; evidencia Allure (screenshot UI / JSON API).
 - Smoke vs regresión (tags) para no pagar multi-browser en cada feedback corto.
 
@@ -247,59 +248,73 @@ Nota: el listado de `films` usa `result[]`, mientras `people`/`planets` usan `re
 Archivo: [`.github/workflows/monday-tests.yml`](.github/workflows/monday-tests.yml)
 
 - **Cron:** `0 18 * * 1` → lunes **15:00 ART** (GMT-3), suite **full**
+- **Pull request a `main`:** suite **smoke** como gate del PR (se cancela la corrida anterior si se pushea de nuevo)
 - También `workflow_dispatch` con inputs `test_env` (`prod`/`qa`/`dev`) y `suite` (`smoke`/`full`)
 - **smoke:** API + UI Chromium con `--grep @smoke` (Firefox/WebKit/mobile se skipean)
 - **full:** API completa + matrix de 4 projects UI
 - Job **api:** instala deps, corre suite según tag, sube `api-responses/` + `api-evidence/` + report
 - Job **ui** con **matrix** de 4 projects (chromium / firefox / webkit / mobile-chromium), browsers en paralelo, `fail-fast: false`
+- **Cache** (implementada): `npm` vía `actions/setup-node` y browsers en `~/.cache/ms-playwright` vía `actions/cache`, con key por versión de Playwright + browser. En cache hit solo se instalan las dependencias del sistema (`playwright install-deps`).
 
-### Cómo escalaría el workflow si la suite crece
+### Cómo escalaría el workflow si la suite crece (propuesta, no implementado)
 
 - **Sharding:** `npx playwright test --project=ui-chromium --shard=1/4` … `4/4` y merge de blob reports.
 - **Matrix por capa:** no repetir API en cada celda UI (como ya está separado).
 - **Tags:** `@smoke` en PR, full + multi-browser en nightly/lunes.
 - **Secrets / Environments:** `UI_BASE_URL`, `API_BASE_URL` por environment de GitHub (`qa`, `dev`, `prod`); nunca hardcodear en el YAML.
-- **Cache** de `~/.cache/ms-playwright` y `npm`.
 - Retries acotados + alerta al equipo solo tras reintento fallido (ver preguntas teóricas).
 
 ---
 
 ## Uso del asistente de IA + MCP Servers
 
-Trabajé el challenge con **Cursor** (agente + herramientas MCP/nativas). Criterio: la IA acelera scaffolding y exploración; las decisiones de riesgo y honestidad del contrato las firmé yo.
+Trabajé el challenge con **Cursor** (agente). Criterio: la IA acelera scaffolding, exploración y redacción; qué se automatiza, qué riesgo se cubre y qué se entrega lo decido yo.
 
-### MCP / tooling usado (al menos 2)
+### MCP servers usados
 
-1. **Filesystem / herramientas de archivos del agente (Cursor)**  
-   Scaffold del repo, POM, schemas AJV, workflow YAML, commits. Equivalente práctico a un Filesystem/Git MCP: lectura/escritura estructurada del proyecto y refactors.
+Evidencia completa (llamadas, respuestas, snapshots y screenshots): [`docs/mcp-evidence/`](docs/mcp-evidence/README.md).
 
-2. **Exploración UI vía Playwright (scripts de descubrimiento + corridas headed/headless)**  
-   Antes de escribir el spec final, exploré locators reales del buscador (Select2 `#PadOrigen` / `#PadDestino`, `#fechaPartida`, `#btnCons`, estados `#servicios` / “No encontramos opciones”). Mismo caso de uso que un **Playwright MCP**: descubrir la UI antes de solidificar el POM.
+1. **Playwright MCP** (`@playwright/mcp`) — exploración del buscador antes de tocar el POM.  
+   `browser_navigate` → `browser_snapshot` → `browser_click` (Buscar vacío / combobox Origen) → `browser_type` → `browser_take_screenshot`. Qué cambió por eso:
+   - locators por rol: `getByRole('button', { name: 'Buscar' })`, `textbox "Ida"`, opciones como `treeitem`;
+   - el escenario “datos inválidos” asserta los mensajes reales (“Completá el Origen de tu viaje”…) en vez de `:invalid`;
+   - un bug de accesibilidad de producto: [`docs/bug-report-a11y-controles-sin-nombre.md`](docs/bug-report-a11y-controles-sin-nombre.md).
+
+2. **Git MCP** (`mcp-server-git`) — revisión del refactor de esperas.  
+   `git_status` + `git_diff_unstaged` para revisar hunk por hunk que no quedara ningún `waitFor({ state })` / `waitForFunction` en el POM y que la cache del workflow estuviera en los dos jobs; `git_log` antes de armar los commits.
 
 ### Caso donde decidí NO usar el asistente
 
-No delegué a la IA la decisión de **inventar un HTTP 400** en SWAPI. Probé requests inválidos; la API responde **404** (o 200 con params “raros”). El test documenta el comportamiento real. Forzar un 400 “porque el challenge lo menciona” sería deshonesto.
+**Qué automatizar y qué dejar afuera.** El alcance (4 escenarios UI, no sumar más E2E del mismo buscador, multi-browser solo en el cron) y el orden del backlog por ROI los definí yo. La IA puede escribir más tests, pero no sabe qué riesgo importa para el negocio ni cuánto mantenimiento estamos dispuestos a pagar por un sitio ajeno.
 
-Tampoco dejé que la IA “rellene sola” las respuestas teóricas: las escribí con criterio de rol en [`docs/theoretical-questions.md`](docs/theoretical-questions.md).
+**La revisión antes de entregar.** Revisé yo cada test y cada respuesta, no el asistente: un test que pasa no garantiza que valide lo correcto.
 
 ### MCP propuesto (no usado aquí) — útil en el día a día
 
-**Slack MCP** (o notificación equivalente): cuando el cron del lunes falla, publicar en un canal `#qa-ci` el link del run, el project que falló y el artifact del report. Cierra el loop CI → humano sin mirar Actions a mano. En un equipo Beilox real, eso reduce MTTR más que sumar otro browser al matrix.
+**Atlassian MCP (Jira)**: cargar el bug directamente desde la sesión de exploración. Con Playwright MCP ya tengo pasos, snapshot y screenshots; con Jira MCP el asistente crea el issue con esa evidencia adjunta y lo linkea a la historia, sin copiar y pegar. Acá no lo usé porque no hay un Jira de Beilox: el bug quedó documentado en [`docs/bug-report-a11y-controles-sin-nombre.md`](docs/bug-report-a11y-controles-sin-nombre.md) con el formato listo para cargar.
 
 ### Qué aportó la IA vs. criterio humano (resumen)
 
 | Área | IA / agente | Criterio humano |
 |------|-------------|-----------------|
 | Scaffold, POM, CI YAML | Implementación rápida | Arquitectura (separación pages/assertions/fixtures) |
+| Locators | Exploración con Playwright MCP | Elegir rol vs. `aria-labelledby` según estabilidad |
 | Locators / flaky Firefox | Propuesta `noWaitAfter` tras evidencia | Aceptar trade-off sitio externo |
 | Schemas AJV | Borrador | Validar shape real (`result` vs `results`, typo `messsage`) |
-| Teoría / 400 vs 404 | — | Firma del candidato |
+| Preguntas teóricas | Ayuda de redacción | Contenido y criterio revisados y ajustados por mí |
+| Alcance y backlog | — | Decisión propia |
 
 ---
 
 ## Preguntas teóricas
 
 Ver [`docs/theoretical-questions.md`](docs/theoretical-questions.md).
+
+---
+
+## Trabajo en equipo
+
+Cómo trabajaría este repo con otros QA (rama por historia, PR, control cruzado, merge a la rama de integración): [`docs/git-workflow.md`](docs/git-workflow.md).
 
 ---
 

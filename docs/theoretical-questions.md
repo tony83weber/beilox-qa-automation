@@ -12,13 +12,15 @@ Antes de un `test.skip`: mirar **trace/video/screenshot**, confirmar si falla el
 
 ## 3. POM — cambio del botón “Buscar”
 
-**Un archivo:** `src/pages/home.page.ts` (selector `#btnCons` / acción `submitSearch`). Los specs y las assertions no conocen el selector. Esa es la razón de separar selectores/acciones de aserciones.
+**Un archivo:** `src/pages/home.page.ts` (locator `searchButton` = `getByRole('button', { name: 'Buscar' })`, usado por la acción `submitSearch`). Los specs y las assertions no conocen el selector. Esa es la razón de separar selectores/acciones de aserciones. Y como el locator es por rol + nombre visible, un cambio de id o de clase ni siquiera obliga a tocar ese archivo.
 
 ## 4. AI assistant — uso responsable
 
 Si un test generado “pasa al primer intento”, chequeo: ¿aserta el **comportamiento de negocio** o solo que “algo es visible”? ¿Hay waits fijos? ¿Selectores frágiles? ¿Aísla datos? ¿Encaja en el POM?
 
-**Caso de no uso:** no forcé un HTTP **400** en SWAPI cuando la API responde **404** a ids inválidos. Inventar el status “porque el enunciado lo menciona” habría sido deshonesto. Las respuestas teóricas también las firmé yo: son criterio de rol, no autocompletado.
+**Caso de no uso:** decidir **qué automatizar**. El alcance (4 escenarios UI, no sumar más E2E del mismo buscador, multi-browser solo en el cron) y la prioridad del backlog por ROI los definí yo: la IA puede generar tests, pero no sabe qué riesgo importa ni cuánto mantenimiento conviene pagar sobre un sitio ajeno. Tampoco delegué la revisión final: cada test lo revisé yo.
+
+Estas respuestas las redacté con ayuda del asistente; el contenido y el criterio los revisé y ajusté punto por punto.
 
 ## 5. Criterio del rol (no delegable a IA)
 

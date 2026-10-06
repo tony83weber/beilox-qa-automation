@@ -22,8 +22,9 @@ Framework de pruebas automatizadas con **Playwright + TypeScript** (strict), cub
 ## Instalación completa (WSL / Linux)
 
 ```bash
-# 1) Entrar al repo
-cd ~/beilox-latest   # o la carpeta donde clonaste el proyecto
+# 1) Clonar el repo
+git clone https://github.com/tony83weber/beilox-qa-automation.git
+cd beilox-qa-automation
 
 # 2) Dependencias Node
 npm ci
@@ -42,12 +43,9 @@ sudo apt install -y default-jre
 Actualizar código cuando haya cambios:
 
 ```bash
-cd ~/beilox-latest
 git pull
 npm ci
 ```
-
-> Nota: el trabajo del agente Cloud puede vivir en el remoto `tmp-...`. Si `beilox-qa-challenge` quedó atrasado, usá la carpeta actualizada (`beilox-latest`) o recloná ese remoto.
 
 ---
 

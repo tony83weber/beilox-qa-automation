@@ -22,10 +22,21 @@ export class SearchResultsPage extends BasePage {
   }
 
   async waitForResultsSettled(): Promise<void> {
+    // Un solo wait (sin Promise.race): el "perdedor" del race quedaba en rojo en Allure
+    // aunque el test pasara.
+    await this.page.waitForURL(/pasajes-micro\//i, { timeout: 45_000 }).catch(() => undefined);
     await this.page.waitForLoadState('domcontentloaded');
-    await Promise.race([
-      this.serviceItems.first().waitFor({ state: 'visible', timeout: 45_000 }),
-      this.emptyStateMessage.waitFor({ state: 'visible', timeout: 45_000 }),
-    ]);
+    await this.page.waitForFunction(
+      () => {
+        const bodyText = document.body?.innerText ?? '';
+        const hasEmpty = /No encontramos opciones para tu viaje/i.test(bodyText);
+        const hasServices = !!document.querySelector(
+          '#servicios [id*="ServiciosListView"], #servicios #divData',
+        );
+        return hasEmpty || hasServices;
+      },
+      undefined,
+      { timeout: 45_000 },
+    );
   }
 }

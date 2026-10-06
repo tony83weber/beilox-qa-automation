@@ -38,6 +38,7 @@ Notas del candidato (2026-10-06). Revisar mañana; no implementar todavía.
 - Revisar si los selectores actuales (Select2, `#btnCons`, etc.) son las mejores opciones.
 - Preferir roles/labels estables cuando el DOM lo permita; documentar trade-offs del sitio productivo.
 - Validar en Chromium / Firefox / WebKit / Pixel 5 tras cambios.
+- **Parcial:** se corrigieron waits Select2 / `Promise.race` que dejaban steps rojos en Allure con test passed.
 
 ## Orden sugerido (siguiente)
 

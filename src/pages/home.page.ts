@@ -1,4 +1,4 @@
-import type { Locator, Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import type { SearchCriteria } from '../types/search';
 import { formatDepartureDate } from '../data/search-data';
 import { BasePage } from './base.page';
@@ -35,13 +35,20 @@ export class HomePage extends BasePage {
   }
 
   async selectOrigin(query: string, optionIncludes: string): Promise<void> {
-    await this.pickSelect2(this.originCombobox, 'select2-PadOrigen-container', query, optionIncludes);
+    await this.pickSelect2(
+      this.originCombobox,
+      'select2-PadOrigen-container',
+      'PadOrigen',
+      query,
+      optionIncludes,
+    );
   }
 
   async selectDestination(query: string, optionIncludes: string): Promise<void> {
     await this.pickSelect2(
       this.destinationCombobox,
       'select2-PadDestino-container',
+      'PadDestino',
       query,
       optionIncludes,
     );
@@ -100,13 +107,15 @@ export class HomePage extends BasePage {
   private async pickSelect2(
     combobox: Locator,
     containerId: string,
+    hiddenInputId: string,
     query: string,
     optionIncludes: string,
   ): Promise<void> {
+    await this.closeSelect2Dropdowns();
+
     await combobox.click({ force: true });
 
-    const openDropdown = this.page.locator('.select2-container--open');
-    if ((await openDropdown.count()) === 0) {
+    if ((await this.page.locator('.select2-container--open').count()) === 0) {
       await this.page.locator(`#${containerId}`).click({ force: true });
     }
 
@@ -114,7 +123,9 @@ export class HomePage extends BasePage {
     await searchField.waitFor({ state: 'visible' });
     await searchField.fill(query);
 
-    const options = this.page.locator('.select2-results__option');
+    const options = this.page.locator(
+      '.select2-container--open .select2-results__option, .select2-results__option',
+    );
     await options.first().waitFor({ state: 'visible' });
     const preferred = options.filter({ hasText: optionIncludes });
     if ((await preferred.count()) > 0) {
@@ -123,9 +134,31 @@ export class HomePage extends BasePage {
       await options.first().click();
     }
 
-    await openDropdown
-      .first()
-      .waitFor({ state: 'hidden', timeout: 5_000 })
-      .catch(() => undefined);
+    // CDP deja a veces `.select2-container--open` aunque la opción ya quedó elegida.
+    // No esperamos "hidden" (timeout → step rojo en Allure); validamos el value del input.
+    await expect(this.page.locator(`#${hiddenInputId}`)).not.toHaveValue('', {
+      timeout: 10_000,
+    });
+    await this.closeSelect2Dropdowns();
+  }
+
+  private async closeSelect2Dropdowns(): Promise<void> {
+    await this.page.evaluate(() => {
+      const jq = (
+        window as unknown as {
+          jQuery?: (selector: string) => { select2?: (cmd: string) => void };
+        }
+      ).jQuery;
+      if (!jq) {
+        return;
+      }
+      for (const id of ['PadOrigen', 'PadDestino']) {
+        try {
+          jq(`#${id}`).select2?.('close');
+        } catch {
+          // ignore
+        }
+      }
+    });
   }
 }
